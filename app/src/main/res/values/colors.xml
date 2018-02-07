@@ -171,4 +171,15 @@
     <color name="list_violet">#9575cd</color>
     <color name="list_blue">#64b5f6</color>
 
+    <color name="colorDeepBlue">#6275ba</color>
+    <color name="colorWhite2">#ebebeb</color>
+    <color name="colorViolet2">#66ffffff</color>
+    <color name="colorViolet3">#91bbc4e1</color>
+    <color name="colorGreen1">#a112fdea</color>
+    <color name="colorDarkB">#666666</color>
+    <color name="colorGrayB">#999999</color>
+    <color name="uberBlue">#21abca</color>
+    <color name="colorBlackA">#333333</color>
+    <color name="colorGrayC">#eef2f5</color>
+
 </resources>

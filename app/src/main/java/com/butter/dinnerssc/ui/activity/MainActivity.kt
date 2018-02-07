@@ -3,32 +3,45 @@ package com.butter.dinnerssc.ui.activity
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.butter.dinnerssc.R
+import com.butter.dinnerssc.data.getTrendItemData
+import com.butter.dinnerssc.model.event.InitDataEvent
+import com.butter.dinnerssc.model.event.SwitchLotteryEvent
+import com.butter.dinnerssc.ui.customview.MyProgressDialog
 import com.butter.dinnerssc.ui.fragment.BaseHomeFragment
 import com.butter.dinnerssc.ui.fragment.HomeMainFragment
 import com.butter.dinnerssc.ui.fragment.HomeMeFragment
-import java.util.ArrayList
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_main_toolbar.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var fragments: MutableList<BaseHomeFragment>
     private val OVERVIEW_INDEX = 0
     private val ME_INDEX = 1
+    lateinit var dialog: MyProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
         setContentView(R.layout.activity_main)
+        tv_title.text = getTrendItemData()[0].name
         init()
     }
 
     private fun init() {
         setClick()
         setToolBarStatus(0)
+        dialog = MyProgressDialog(this)
         free_vp.setBackgroundColor(Color.LTGRAY)
         free_vp.setScrollable(false)
         fragments = ArrayList<BaseHomeFragment>()
@@ -36,6 +49,12 @@ class MainActivity : AppCompatActivity() {
         fragments.add(HomeMainFragment())
         fragments.add(HomeMeFragment())
         free_vp.setAdapter(FragmentAdapter(supportFragmentManager, fragments))
+        //发送延迟请求
+        val t = Random().nextInt(3)
+        dialog.initDialog("")
+        val msg = Message()
+        msg.what = 0
+        handler.sendMessageDelayed(msg, 1000 * t.toLong())
     }
 
     private fun setClick() {
@@ -66,6 +85,29 @@ class MainActivity : AppCompatActivity() {
         override fun getCount(): Int {
             return fragments.size
         }
+    }
+
+
+    val handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            when (msg?.what) {
+                0 -> {
+                    EventBus.getDefault().post(InitDataEvent(""))
+                    dialog.dissmisDialog()
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun switchLotteryEvent(event: SwitchLotteryEvent) {
+        tv_title.text= getTrendItemData()[event.position].name
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 }
 

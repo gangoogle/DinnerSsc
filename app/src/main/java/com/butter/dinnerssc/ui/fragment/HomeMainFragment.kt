@@ -18,7 +18,9 @@ class HomeMainFragment : BaseHomeFragment() {
 
     override fun initFragmentView(): MutableList<BaseFragment> {
         val indicatorShowFgm: BaseFragment = IndicatorShowFragment()
-        return mutableListOf<BaseFragment>(indicatorShowFgm)
+        val cardFgm: BaseFragment = CardFragment()
+        val openLottery: BaseFragment = OpenLotteryFragment()
+        return mutableListOf<BaseFragment>(indicatorShowFgm, cardFgm,openLottery)
     }
 
 }
