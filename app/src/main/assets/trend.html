@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="echarts.min.js"></script>
+    <script type="text/javascript">
+        function showTrendChart(data) {
+            var jsonData = JSON.parse(data);
+            var dateArray = new Array();
+            var legendArray = new Array();
+            for (var t = 0; t < jsonData.date.length; t++) {
+                dateArray.push(jsonData.date[t] + '\n' + jsonData.weeks[t]);
+            }
+            for (var i = 0; i < jsonData.legend.length; i++) {
+                if (i === 1 && jsonData.hzLine) {
+                    legendArray.push({
+                        name: jsonData.legend[i],
+                        icon: 'image://./dot_line_orange.png',
+                        textStyle: {color: '#666666'}
+                    });
+                } else {
+                    legendArray.push({name: jsonData.legend[i], textStyle: {color: '#666666'}});
+                }
+            }
+            var tooltipFormatter = '{b0}&nbsp&nbsp&nbsp&nbsp{c0}<br/>{a1}:{c1}<br/>{a2}:{c2}<br/>'
+                    + '{a5}:{c5}<br/>{a6}:{c6}<br/>{a7}:{c7}<br/>{a8}:{c8}<br/>{a4}:{c4}<br/>{a3}:{c3}';
+            //无可卖房的tooltip模板
+            if (!jsonData.hzLine) {
+                tooltipFormatter = '{b0}&nbsp&nbsp&nbsp&nbsp{c0}<br/>{a1}:{c1}'
+                        + '<br/>{a4}:{c4}<br/>{a5}:{c5}<br/>{a6}:{c6}<br/>{a7}:{c7}<br/>{a3}:{c3}<br/>{a2}:{c2}';
+            }
+            option = {
+                grid: {
+                    top: '10%',
+                    left: '2%',
+                    right: '2%',
+                    bottom: '12%',
+                    containLabel: true
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    confine: true,
+                    textStyle: {
+                        fontSize: 12,
+                    },
+                    transitionDuration: 0,
+                    triggerOn: 'mousemove',
+                    alwaysShowContent: false,
+                    hideDelay: 50,
+                    formatter: tooltipFormatter,
+                    axisPointer: {
+                        type: 'line',
+                        lineStyle: {
+                            color: '#cbcccf',
+                        }
+                    },
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: dateArray,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#DEDFD1'
+                            },
+                        },
+                        axisLabel: {
+                            show: true,
+                            interval: 0,
+                            textStyle: {
+                                color: '#9BAAB9',
+                                fontSize: 11,
+                            }
+                        },
+                        axisTick: {
+                            show: true,
+                            alignWithLabel: true,
+                        }
+
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        min: 0,
+                        splitNumber: 4,
+                        axisLabel: {
+                            show: true,
+                            formatter: '{value} ',
+                            textStyle: {
+                                color: '#9BAAB9',
+                                fontSize: 11,
+                            },
+                            margin: 10,
+                        },
+                        axisLine: {
+                            show: false,
+                        },
+                        axisTick: {
+                            show: false,
+                        },
+                        splitLine: {
+                            show: true,
+                            interval: 3,
+                            lineStyle: {
+                                type: 'dotted',
+                                color: ['#e1e2e4']
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        silent: true,
+                        name: jsonData.holidayChartData.name,
+                        type: 'line',
+                        data: jsonData.holidayChartData.dataStr,
+                        smooth: true,
+                        symbol: 'image://url',
+                        symbolSize: 0,
+                        showSymbol: false,
+                        smoothMonotone: 'x',
+                        lineStyle: {
+                            normal: {
+                                width: 0
+                                ,
+                            },
+                        },
+                    },
+                ],
+                legend: {
+                    data: legendArray,
+                    orient: 'horizontal',
+                    y: 'bottom',
+                    textStyle: {
+                        fontSize: 12,
+                        color: ['#666666'],
+                    },
+                    selectedMode: false,
+                },
+            };
+            if (jsonData.barData) {
+                option.series.push({
+                    name: jsonData.barData.name,
+                    type: 'bar',
+                    data: jsonData.barData.data,
+                    color: [jsonData.barData.color],
+                    barWidth: 10,
+                    silent: false,
+                });
+            }
+
+            if (jsonData.hzLine) {
+                option.series.push({
+                    name: jsonData.hzLine.name,
+                    lineStyle: {
+                        normal: {
+                            type: 'dotted',
+                            width: 1
+                        },
+                    },
+                    color: [jsonData.hzLine.color],
+                    symbol: 'image://url',
+                    showSymbol: false,
+                    legendHoverLink: false,
+                    hoverAnimation: false,
+                    silent: true,
+                    type: 'line',
+                    data: jsonData.hzLine.data,
+                    showSymbol: false,
+                });
+            }
+
+            if (jsonData.lineData) {
+                option.series = option.series.concat(getLine(jsonData.lineData));
+            }
+            if (jsonData.observeDate >= 0) {
+                option.series.push(
+                        {
+                            type: 'line',
+                            markLine: {
+                                silent: true,
+                                label: {
+                                    normal: {
+                                        show: false,
+                                    }
+                                },
+                                symbol: 'image://url',
+                                data: [{xAxis: dateArray[jsonData.observeDate]}],
+                                lineStyle: {
+                                    normal: {
+                                        color: '#D5D5D7',
+                                        type: 'dotted',
+                                    }
+                                }
+                            }
+                        }
+                )
+            }
+            myChart.clear();
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+
+        }
+
+        function getLine(list) {
+            var lineData = new Array();
+            for (var i = 0; i < list.length; i++) {
+                lineData.push(
+                        {
+                            silent: true,
+                            name: list[i].name,
+                            type: 'line',
+                            data: list[i].data,
+                            smooth: true,
+                            symbol: 'image://url',
+                            symbolSize: 0,
+                            showSymbol: false,
+                            smoothMonotone: 'x',
+                            color: [list[i].color],
+                            lineStyle: {
+                                normal: {
+                                    width: list[i].lineWidth,
+                                },
+                            },
+                        }
+                )
+            }
+            return lineData;
+        }
+        //tooltip的change事件
+        function onTooltipChange(index) {
+            android.onToolTipChange(index);
+        }
+    </script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 600px;height:200px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var mainComponent = document.getElementById('main');
+    var width = window.screen.width;
+    var height = window.screen.height;
+    if (width > height) {
+        mainComponent.style.height = (height - 72) + 'px';
+        mainComponent.style.width = width - 20 + 'px';
+    } else {
+        mainComponent.style.height = (width - 72) + 'px';
+        mainComponent.style.width = height - 20 + 'px';
+    }
+    var myChart = echarts.init(mainComponent);
+</script>
+</body>
+</html>

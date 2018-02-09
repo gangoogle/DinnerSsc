@@ -26,7 +26,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#b8152d"
+                android:background="@color/colorDeepBlue"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
@@ -41,7 +41,7 @@
                     android:id="@+id/tv_odd_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="20171228-053"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="16sp"/>
             </LinearLayout>
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="5 8 9 7 4"
+                    android:text=""
                     android:textColor="#b8152d"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
@@ -122,7 +122,7 @@
                     android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2017-12-28 14:40:40"
+                    android:text=""
                     android:textColor="@color/ub_gray_a"
                     android:textSize="14sp"/>
             </LinearLayout>

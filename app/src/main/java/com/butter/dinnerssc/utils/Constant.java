@@ -5,6 +5,8 @@ package com.butter.dinnerssc.utils;
  */
 
 public class Constant {
+
+    public static String SERVER_URL = "http://f.apiplus.net";
     public static String DEFAULT_EMAIL = "adyadmin@163.com";
     public static String DEFAULT_PWD = "adyady";
 
@@ -17,6 +19,6 @@ public class Constant {
 
     public static String SP_NOTIFICATION_SWITCH = "sp_notification_switch";
 
-    public static String SP_SCORE="sp_score";
+    public static String SP_SCORE = "sp_score";
 
 }

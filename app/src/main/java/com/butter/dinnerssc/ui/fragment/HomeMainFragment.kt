@@ -20,7 +20,8 @@ class HomeMainFragment : BaseHomeFragment() {
         val indicatorShowFgm: BaseFragment = IndicatorShowFragment()
         val cardFgm: BaseFragment = CardFragment()
         val openLottery: BaseFragment = OpenLotteryFragment()
-        return mutableListOf<BaseFragment>(indicatorShowFgm, cardFgm,openLottery)
+        val dimensFgm: BaseFragment = DimensFragment()
+        return mutableListOf<BaseFragment>(indicatorShowFgm, cardFgm, openLottery, dimensFgm)
     }
 
 }
