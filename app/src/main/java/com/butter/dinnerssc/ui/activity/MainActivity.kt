@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         dialog.initDialog("")
         val msg = Message()
         msg.what = 0
-        handler.sendMessageDelayed(msg, 1000 * t.toLong())
+        handler.sendMessageDelayed(msg, 1000 * (t.toLong()+1))
     }
 
     private fun setClick() {
