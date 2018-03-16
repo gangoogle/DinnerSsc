@@ -4,10 +4,6 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:id="@+id/ll_fgm_container_sub"
             android:layout_width="match_parent"
@@ -15,5 +11,4 @@
             android:orientation="vertical"
             >
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>

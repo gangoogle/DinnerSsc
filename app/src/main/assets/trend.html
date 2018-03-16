@@ -6,8 +6,8 @@
     <!-- 引入 echarts.js -->
     <script src="echarts.min.js"></script>
     <script type="text/javascript">
+
         function showTrendChart(data) {
-            allert(data);
             var jsonData = JSON.parse(data);
             var dateArray = new Array();
             var legendArray = new Array();
@@ -18,7 +18,6 @@
                 if (i === 1 && jsonData.hzLine) {
                     legendArray.push({
                         name: jsonData.legend[i],
-                        icon: 'image://./dot_line_orange.png',
                         textStyle: {color: '#666666'}
                     });
                 } else {
@@ -200,6 +199,7 @@
                         }
                 )
             }
+
             myChart.clear();
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
@@ -252,6 +252,7 @@
         mainComponent.style.height = (width - 72) + 'px';
         mainComponent.style.width = height - 20 + 'px';
     }
+
     var myChart = echarts.init(mainComponent);
 </script>
 </body>

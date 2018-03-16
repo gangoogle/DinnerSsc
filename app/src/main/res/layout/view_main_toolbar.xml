@@ -42,34 +42,33 @@
                 android:textSize="11sp"/>
         </RelativeLayout>
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/rl_price"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical">-->
+        <RelativeLayout
+            android:id="@+id/rl_soccer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_price"-->
-                <!--android:layout_width="18dp"-->
-                <!--android:layout_height="18dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="7dp"-->
-                <!--android:src="@drawable/selector_navi_price"/>-->
+            <ImageView
+                android:id="@+id/iv_soccer"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="7dp"
+                android:src="@drawable/selector_navi_price" />
 
-            <!--<TextView-->
-                <!--android:id="@+id/tv_price"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@id/iv_price"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:text="定价"-->
-                <!--android:textColor="@drawable/selector_navi_text"-->
-                <!--android:textSize="11sp"/>-->
-        <!--</RelativeLayout>-->
-
+            <TextView
+                android:id="@+id/tv_soccer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_soccer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="赛事"
+                android:textColor="@drawable/selector_navi_text"
+                android:textSize="11sp" />
+        </RelativeLayout>
 
 
         <RelativeLayout

@@ -9,7 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 open class HttpLoggingInterceptor : HttpLoggingInterceptor.Logger {
 
     override fun log(message: String?) {
-        Log.d("yzg", "okhttp->$message")
+        Log.i("yzg", "okhttp->$message")
     }
 
 }

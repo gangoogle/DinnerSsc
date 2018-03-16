@@ -24,7 +24,7 @@ open abstract class BaseHomeFragment : Fragment() {
         var layoutId = 0
         if (this is HomeMainFragment) {
             layoutId = R.layout.fragment_current_region
-        } else if (this is HomeMeFragment) {
+        } else {
             layoutId = R.layout.fragment_home_subordinate
         }
         val view = inflater?.inflate(layoutId, container, false)
