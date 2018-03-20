@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_notice"
+        android:orientation="horizontal"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@mipmap/ic_notice"
+            android:layout_width="30dp"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:textColor="@color/card_title_a"
+            android:textSize="12sp"
+            android:layout_marginLeft="15dp"
+            android:text="竞足周六046比赛推迟通知"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

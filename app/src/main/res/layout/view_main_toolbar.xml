@@ -3,13 +3,16 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
-
+<LinearLayout
+    android:background="#bbbbbb"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"></LinearLayout>
     <LinearLayout
         android:id="@+id/ll_tool"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/card_title_a"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="visible">

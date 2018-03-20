@@ -1,4 +1,4 @@
-package com.butter.amberssc.net
+package com.butter.dinnerssc.net
 
 import android.util.Log
 import okhttp3.logging.HttpLoggingInterceptor

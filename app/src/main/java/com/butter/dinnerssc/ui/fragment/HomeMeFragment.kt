@@ -12,7 +12,6 @@ import android.view.ViewGroup
 class HomeMeFragment : BaseHomeFragment() {
 
     override fun initFragmentView(): MutableList<BaseFragment> {
-
-        return mutableListOf<BaseFragment>()
+        return mutableListOf<BaseFragment>(MeFragment())
     }
 }

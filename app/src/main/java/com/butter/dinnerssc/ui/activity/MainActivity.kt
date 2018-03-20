@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.butter.dinnerssc.R
 import com.butter.dinnerssc.data.getTrendItemData
+import com.butter.dinnerssc.model.event.FinishEvent
 import com.butter.dinnerssc.model.event.InitDataEvent
 import com.butter.dinnerssc.model.event.SwitchLotteryEvent
 import com.butter.dinnerssc.ui.customview.MyProgressDialog
@@ -61,6 +62,12 @@ class MainActivity : AppCompatActivity() {
         msg.what = 0
         handler.sendMessageDelayed(msg, 1000 * (t.toLong() + 1))
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onReEventFinish(event: FinishEvent) {
+        finish()
+    }
+
 
     private fun setClick() {
         rl_overview.setOnClickListener {

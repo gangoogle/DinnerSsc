@@ -1,11 +1,12 @@
 package com.butter.dinnerssc.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.butter.amberssc.net.RetrofitNetHelper
+import com.butter.dinnerssc.net.RetrofitNetHelper
 import com.butter.dinnerssc.R
 import com.butter.dinnerssc.data.getTrendItemData
 import com.butter.dinnerssc.model.event.InitDataEvent
@@ -13,6 +14,7 @@ import com.butter.dinnerssc.model.event.SwitchLotteryEvent
 import com.butter.dinnerssc.model.response.BaseResp
 import com.butter.dinnerssc.model.response.CaiPiaoResponse
 import com.butter.dinnerssc.net.Api
+import com.butter.dinnerssc.ui.activity.LotteryDetailActivity
 import kotlinx.android.synthetic.main.fragment_open_lotterry.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -71,6 +73,12 @@ class OpenLotteryFragment : BaseFragment() {
                                 baseResp.data[0].openCode.replace(',', ' ', true)
                         mView?.tv_odd_number?.text = baseResp.data[0].opentimestamp
                         mView?.tv_time?.text = baseResp.data[0].opentime
+                        mView?.setOnClickListener {
+                            val intent = Intent(context, LotteryDetailActivity::class.java)
+                            intent.putExtra("url", getTrendItemData()[position]?.url)
+                            intent.putExtra("name",  getTrendItemData()[position]?.name)
+                            context.startActivity(intent)
+                        }
                     }
 
                     override fun onFailure(error: String) {

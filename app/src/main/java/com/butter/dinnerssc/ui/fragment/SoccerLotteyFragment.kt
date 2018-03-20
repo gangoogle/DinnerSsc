@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_socccer.view.*
  * Created by gangoogle on 2018/3/16.
  */
 class SoccerLotteyFragment : BaseFragment() {
-
+    val  lotteryUrl = "http://live.m.500.com/home/zq/jczq/cur?render=local"
     init {
         EventBus.getDefault().register(this)
     }
@@ -75,15 +75,20 @@ class SoccerLotteyFragment : BaseFragment() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 if (url != "") {
+                    if(url.equals("http://m.500.com/")){
+                        Log.d("yzg","url equals 500")
+                        return true
+                    }
                     view?.loadUrl(url);   //在当前的webview中跳转到新的url
-                    System.out.println("url:" + url);
+                    Log.d("yzg" ,"url:$url");
                 }
-                return true;
+                return true
             }
+
         })
     }
 
     fun initData() {
-        webview.loadUrl("http://live.m.500.com/home/zq/jczq/cur?render=local")
+        webview.loadUrl(lotteryUrl)
     }
 }

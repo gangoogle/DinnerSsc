@@ -1,4 +1,4 @@
-package com.butter.amberssc.net
+package com.butter.dinnerssc.net
 
 import okhttp3.Interceptor
 import android.os.Looper

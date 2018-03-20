@@ -24,8 +24,10 @@ open abstract class BaseHomeFragment : Fragment() {
         var layoutId = 0
         if (this is HomeMainFragment) {
             layoutId = R.layout.fragment_current_region
-        } else {
+        } else if(this is HomeSoccerFragment){
             layoutId = R.layout.fragment_home_subordinate
+        }else if(this is HomeMeFragment){
+            layoutId = R.layout.fragment_home_me
         }
         val view = inflater?.inflate(layoutId, container, false)
         return view!!
@@ -36,8 +38,10 @@ open abstract class BaseHomeFragment : Fragment() {
         var id: Int = 0
         if (this is HomeMainFragment) {
             id = R.id.ll_fgm_container
-        } else {
+        } else if(this is HomeSoccerFragment) {
             id = R.id.ll_fgm_container_sub
+        }else if(this is HomeMeFragment){
+            id = R.id.ll_fgm_home_me
         }
         val fragments = initFragmentView()
 

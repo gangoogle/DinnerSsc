@@ -1,9 +1,10 @@
-package com.butter.amberssc.net
+package com.butter.dinnerssc.net
 
 import android.content.Context
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import com.butter.dinnerssc.net.HttpLoggingInterceptor as MyInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
@@ -11,6 +12,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import com.butter.dinnerssc.model.response.BaseResp
 import com.butter.dinnerssc.net.BasicParamsInterceptor
+import com.butter.dinnerssc.net.UrlInterceptor
 import com.butter.dinnerssc.utils.Constant
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,7 +49,7 @@ class RetrofitNetHelper private constructor(val context: Context) {
 
     init {
         //logging interceptor
-        val loggingInterceptor = HttpLoggingInterceptor(com.butter.amberssc.net.HttpLoggingInterceptor())
+        val loggingInterceptor = HttpLoggingInterceptor(MyInterceptor())
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         //params interceptor
