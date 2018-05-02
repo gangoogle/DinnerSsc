@@ -22,7 +22,7 @@ class MainLotteryActivity : AppCompatActivity() {
         val url = intent.getStringExtra("url")
         Log.d("yzg","url:$url")
         webviewSet()
-        webview.loadUrl("http://$url")
+        webview.loadUrl("$url")
     }
 
     fun webviewSet() {

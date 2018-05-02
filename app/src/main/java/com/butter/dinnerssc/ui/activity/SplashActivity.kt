@@ -65,51 +65,59 @@ class SplashActivity : AppCompatActivity() {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        checkServer()
+        checkServer(false)
     }
 
-    fun checkServer() {
-        val appId: String = "lqd004"
-        val requestQueue = Volley.newRequestQueue(this)
-        val url: String =
-                "http://5597755.com/Lottery_server/get_init_data.php?type=android&appid=$appId"
-        Log.d("yzg", url)
-        val request = StringRequest(url, Response.Listener<String> {
-            Log.d("yzg", "checkServer:Result：$it")
-            val jsonObj = JSONObject(it)
-            if (jsonObj.has("rt_code")
-                    && jsonObj.getString("rt_code").equals("200")
-                    && jsonObj.has("data")) {
-                val base64Data = jsonObj.getString("data")
-                if (!TextUtils.isEmpty(base64Data)) {
-                    var data: String = ""
-                    try {
-                        data = Base64Util.decode(base64Data)
-                    } catch (e: Exception) {
-                        handler.sendEmptyMessage(0)
-                    }
-                    Log.d("yzg", "data:${data}")
-                    val dataObj = JSONObject(data)
-                    if (dataObj.get("show_url").equals("1")) {
-                        //需要跳转
-                        val msg = Message()
-                        msg.obj = dataObj.getString("url")
-                        msg.what = 1
-                        handler.sendMessage(msg)
+    fun checkServer(isDebug:Boolean) {
+        if(!isDebug) {
+            val appId: String = "yzg002"
+            val requestQueue = Volley.newRequestQueue(this)
+            val url: String =
+                    "http://5597755.com/Lottery_server/get_init_data.php?type=android&appid=$appId"
+            Log.d("yzg", url)
+            val request = StringRequest(url, Response.Listener<String> {
+                Log.d("yzg", "checkServer:Result：$it")
+                val jsonObj = JSONObject(it)
+                if (jsonObj.has("rt_code")
+                        && jsonObj.getString("rt_code").equals("200")
+                        && jsonObj.has("data")) {
+                    val base64Data = jsonObj.getString("data")
+                    if (!TextUtils.isEmpty(base64Data)) {
+                        var data: String = ""
+                        try {
+                            data = Base64Util.decode(base64Data)
+                        } catch (e: Exception) {
+                            handler.sendEmptyMessage(0)
+                        }
+                        Log.d("yzg", "data:${data}")
+                        val dataObj = JSONObject(data)
+                        if (dataObj.get("show_url").equals("1")) {
+                            //需要跳转
+                            val msg = Message()
+                            msg.obj = dataObj.getString("url")
+                            msg.what = 1
+                            handler.sendMessage(msg)
+                        } else {
+                            handler.sendEmptyMessage(0)
+                        }
                     } else {
                         handler.sendEmptyMessage(0)
                     }
                 } else {
                     handler.sendEmptyMessage(0)
                 }
-            } else {
-                handler.sendEmptyMessage(0)
-            }
 
-        }, Response.ErrorListener {
-            handler.sendEmptyMessage(0)
-        })
-        requestQueue.add(request)
+            }, Response.ErrorListener {
+                handler.sendEmptyMessage(0)
+            })
+            requestQueue.add(request)
+        }else{
+            //需要跳转
+            val msg = Message()
+            msg.obj = "http://www.baidu.com"
+            msg.what = 1
+            handler.sendMessage(msg)
+        }
 
     }
 
