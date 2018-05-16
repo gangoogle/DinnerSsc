@@ -24,7 +24,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="细分市场"
+                android:text="细分维度"
                 android:textColor="@color/colorBlackA"
                 android:textSize="18sp"/>
 
@@ -38,7 +38,7 @@
                 android:textColor="@color/coloryellow"
                 android:textSize="14sp"/>
 
-            <com.butter.dinnerssc.ui.customview.AnnularView
+            <com.butter.yapple.ui.customview.AnnularView
                 android:id="@+id/aa_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="个位"
+                    android:text="个位维度"
                     android:textColor="@color/colorDarkB"/>
 
                 <TextView
@@ -76,18 +76,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="百位"
+                    android:text="百位维度"
                     android:textColor="@color/colorDarkB"/>
             </LinearLayout>
 
             <TextView
+                android:textColor="@color/white"
                 android:id="@+id/tv_chart"
-                android:background="@color/colorDeepBlue"
+                android:background="@color/colorLoginBg"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_below="@+id/aa_view"
                 android:gravity="center"
-                android:text="走势图->"
+                android:text="趋势图->"
                 android:textSize="18sp"/>
         </RelativeLayout>
 

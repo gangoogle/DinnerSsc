@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:background="@color/colorLoginBg"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="visible">
@@ -68,7 +68,7 @@
                 android:layout_below="@id/iv_soccer"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:text="赛事"
+                android:text="热点"
                 android:textColor="@drawable/selector_navi_text"
                 android:textSize="11sp" />
         </RelativeLayout>

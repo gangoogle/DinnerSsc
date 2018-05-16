@@ -10,9 +10,9 @@
    >
 
     <LinearLayout
-        android:background="@mipmap/usercentr_default_background"
+        android:background="@color/colorLoginBg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="5dp">
@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:srcCompat="@mipmap/icon_kaijiangjieguo"/>
+            app:srcCompat="@mipmap/shendan_share"/>
 
         <TextView
             android:id="@+id/tv_user_eamil"
@@ -57,7 +57,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="30dp"
-            app:srcCompat="@mipmap/icon_tiantiantuiqiu"/>
+            app:srcCompat="@mipmap/finder_hemai"/>
 
         <TextView
             android:layout_width="0dp"
@@ -90,7 +90,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="30dp"
-            app:srcCompat="@mipmap/ic_classify_popularity"/>
+            app:srcCompat="@mipmap/finder_gg"/>
 
         <TextView
             android:layout_width="0dp"
@@ -107,9 +107,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_weight="0"
-            android:background="@color/linen"
             android:padding="4dp"
-            android:text="开"
+            android:text="打开"
             android:textColor="@color/card_title_a"/>
     </LinearLayout>
 
@@ -126,7 +125,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="30dp"
-            app:srcCompat="@mipmap/finder_zlk"/>
+            app:srcCompat="@mipmap/finder_hongbao"/>
 
         <TextView
             android:layout_width="0dp"
@@ -162,7 +161,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="30dp"
-            app:srcCompat="@mipmap/find_feedback"/>
+            app:srcCompat="@mipmap/finder_mn"/>
 
         <TextView
             android:layout_width="0dp"
@@ -193,7 +192,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="30dp"
-            app:srcCompat="@mipmap/icon_version_upgrade"
+            app:srcCompat="@mipmap/football_in"
             />
 
         <TextView

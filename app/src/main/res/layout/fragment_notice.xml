@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:src="@mipmap/ic_notice"
+            android:src="@mipmap/finder_gg"
             android:layout_width="30dp"
             android:layout_height="20dp" />
 
@@ -22,7 +22,7 @@
             android:textColor="@color/card_title_a"
             android:textSize="12sp"
             android:layout_marginLeft="15dp"
-            android:text="竞足周六046比赛推迟通知"
+            android:text="竞足周日032比赛通知"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

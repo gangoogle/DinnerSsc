@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.butter.dinnerssc.ui.activity.NoticeActivity">
+    tools:context="com.butter.yapple.ui.activity.NoticeActivity">
     <LinearLayout
         android:gravity="center_vertical"
         android:id="@+id/ll_title"
@@ -21,7 +21,7 @@
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:text="竞足周六046比赛推迟通知"
+            android:text="竞足周日036比赛通知"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -34,7 +34,7 @@
     <TextView
         android:textColor="@color/card_title_a"
         android:textSize="19sp"
-        android:text="竞足周六046比赛推迟通知"
+        android:text="竞足周日036比赛通知"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
         <ImageView
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp" />
         <TextView
-            android:text="尊敬的用户：\n\t\t周六064英格兰甲级联赛“吉灵汉姆VS布莱克本”比赛推迟时间超过36分钟，根据竞足游戏规则现取消该场比赛，比分无效请广大用户注意！\n\n\n\t\t如果您还有疑问，请联系在线客服"
+            android:text="尊敬的用户：\n\t\t周日064英格兰甲级联赛“吉灵汉姆VS布莱克本”比赛推迟时间超过36分钟，根据竞足游戏规则现取消该场比赛，比分无效请广大用户注意！\n\n\n\t\t如果您还有疑问，请联系在线客服"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

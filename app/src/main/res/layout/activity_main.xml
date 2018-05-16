@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorGrayBg"
-    tools:context="com.butter.dinnerssc.ui.activity.MainActivity">
+    tools:context="com.butter.yapple.ui.activity.MainActivity">
 
     <RelativeLayout
         android:visibility="gone"
@@ -30,11 +30,11 @@
         android:layout_weight="1"
         android:layout_height="0dp">
 
-        <com.butter.dinnerssc.ui.customview.FreeViewPager
+        <com.butter.yapple.ui.customview.FreeViewPager
             android:background="@color/white"
             android:id="@+id/free_vp"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"></com.butter.dinnerssc.ui.customview.FreeViewPager>
+            android:layout_height="fill_parent"></com.butter.yapple.ui.customview.FreeViewPager>
     </LinearLayout>
 
     <include

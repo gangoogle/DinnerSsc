@@ -26,7 +26,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorDeepBlue"
+                android:background="@color/colorLoginBg"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
@@ -64,7 +64,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="开奖号码"
+                    android:text="OpenNumber"
                     android:textColor="@color/ub_gray"
                     android:textSize="16sp"/>
 
@@ -92,7 +92,7 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="#b8152d"
+                    android:textColor="@color/colorMain"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="开奖时间："
+                    android:text="时间："
                     android:textColor="@color/ub_gray_a"
                     android:textSize="14sp"/>
 
