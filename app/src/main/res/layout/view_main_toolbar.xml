@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorLoginBg"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="visible">
@@ -73,6 +73,33 @@
                 android:textSize="11sp" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rl_chart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/iv_chart"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="7dp"
+                android:src="@drawable/selector_navi_warn" />
+
+            <TextView
+                android:id="@+id/tv_charta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_chart"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="趋势"
+                android:textColor="@drawable/selector_navi_text"
+                android:textSize="11sp" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_me"

@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.butter.yapple.ui.customview.MeasuredListView
+    <com.butter.yapplet.ui.customview.MeasuredListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="#00000000"
         android:divider="@null"
-        android:padding="10dp"></com.butter.yapple.ui.customview.MeasuredListView>
+        android:padding="10dp"></com.butter.yapplet.ui.customview.MeasuredListView>
 </LinearLayout>

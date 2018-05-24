@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.butter.yapple.ui.activity.LotteryDetailActivity">
+    tools:context="com.butter.yapplet.ui.activity.LotteryDetailActivity">
     >
 
     <LinearLayout

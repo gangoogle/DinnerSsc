@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.butter.yapple">
+    package="com.butter.yapplet">
 
     <!-- Required -->
     <permission
-        android:name="com.butter.yapple.permission.JPUSH_MESSAGE"
+        android:name="com.butter.yapplet.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
     <!-- Required  一些系统要求的权限，如访问网络等 -->
-    <uses-permission android:name="com.butter.yapple.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="com.butter.yapplet.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -31,43 +31,43 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.butter.yapplet.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/app_icona"
+        android:icon="@mipmap/lanucher360"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name="com.butter.yapplet.ui.activity.MainActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".ui.activity.TrendChartActivity"
+            android:name="com.butter.yapplet.ui.activity.TrendChartActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.NoticeActivity"
+            android:name="com.butter.yapplet.ui.activity.NoticeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.CollectionActivity"
+            android:name="com.butter.yapplet.ui.activity.CollectionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.FeedBackActivity"
+            android:name="com.butter.yapplet.ui.activity.FeedBackActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.MainLotteryActivity"
+            android:name="com.butter.yapplet.ui.activity.MainLotteryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.LotteryDetailActivity"
+            android:name="com.butter.yapplet.ui.activity.LotteryDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name="com.butter.yapplet.ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -93,7 +93,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.butter.yapple" />
+                <category android:name="com.butter.yapplet" />
             </intent-filter>
         </activity>
 
@@ -113,7 +113,7 @@
         <!-- since 3.0.9 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="com.butter.yapple.DataProvider"
+            android:authorities="com.butter.yapplet.DataProvider"
             android:exported="false" />
 
         <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
@@ -125,13 +125,13 @@
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
 
-                <category android:name="com.butter.yapple" />
+                <category android:name="com.butter.yapplet" />
             </intent-filter>
         </service>
         <!-- since 3.1.0 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="com.butter.yapple.DownloadProvider"
+            android:authorities="com.butter.yapplet.DownloadProvider"
             android:exported="true" />
         <!-- Required SDK核心功能 -->
         <receiver
@@ -140,7 +140,7 @@
             android:exported="false">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
-                <category android:name="com.butter.yapple" />
+                <category android:name="com.butter.yapplet" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -162,7 +162,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
-            android:name=".MyReceiver"
+            android:name="com.butter.yapplet.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -171,7 +171,7 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
                 <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.butter.yapple" />
+                <category android:name="com.butter.yapplet" />
             </intent-filter>
         </receiver>
 
@@ -181,21 +181,24 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="f303e8688be3d387f42f3cf5" /> <!-- </>值来自开发者平台取得的AppKey -->
+            android:value="c5e4af5feaaf22a499a83c09" /> <!-- </>值来自开发者平台取得的AppKey -->
 
         <activity
-            android:name=".ui.activity.LoginActivityFix"
+            android:name="com.butter.yapplet.ui.activity.LoginActivityFix"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".caiyi.lottery.LottoTrendActivity"
+            android:name="com.butter.yapplet.caiyi.lottery.LottoTrendActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".webview.WebViewActivity"
+            android:name="com.butter.yapplet.webview.WebViewActivity"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".ui.activity.NewsDetailActivity"
+            android:name="com.butter.yapplet.ui.activity.NewsDetailActivity"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name="com.butter.yapplet.ui.activity.TrendDetailActivity"
             android:theme="@style/AppTheme"></activity>
     </application>
 

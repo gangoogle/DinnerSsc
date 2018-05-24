@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorGrayBg"
-    tools:context="com.butter.yapple.ui.activity.MainActivity">
+    tools:context="com.butter.yapplet.ui.activity.MainActivity">
 
     <RelativeLayout
         android:visibility="gone"
@@ -16,7 +16,7 @@
         android:background="@color/colorPrimary">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_titlea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -30,11 +30,11 @@
         android:layout_weight="1"
         android:layout_height="0dp">
 
-        <com.butter.yapple.ui.customview.FreeViewPager
+        <com.butter.yapplet.ui.customview.FreeViewPager
             android:background="@color/white"
             android:id="@+id/free_vp"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"></com.butter.yapple.ui.customview.FreeViewPager>
+            android:layout_height="fill_parent"></com.butter.yapplet.ui.customview.FreeViewPager>
     </LinearLayout>
 
     <include

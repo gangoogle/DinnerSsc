@@ -1,0 +1,212 @@
+var fenxi={
+	init:function(){
+		if(this.act=="index"){
+			var lotteryName='';
+			var tbInfo = '';
+			if(this.lottery == ""||this.lottery=="FC_SSQ"){
+				$(".qh01").addClass("dq");
+				this.lottery = "FC_SSQ";
+				lotteryName='双色球';
+				tbInfo='<figure class="first"><a href="/fenxi/chart.jsp?lottery=FC_SSQ&type=170"><img src="/static/images/tbssq01.png"><figcaption>红球走势图</figcaption></a></figure>'
+			          +'<figure><a href="/fenxi/chart.jsp?lottery=FC_SSQ&type=171"><img src="/static/images/tbssq02.png"><figcaption>蓝球走势图</figcaption></a></figure>';
+				$("#fx_lt_ssq").show();
+			}
+			if(this.lottery=="FC_3D"){
+				$(".qh02").addClass("dq");
+				lotteryName='福彩3D';
+				tbInfo='<figure class="first"><a href="/fenxi/chart.jsp?lottery=FC_3D&type=183"><img src="/static/images/tb3d01.png"><figcaption>基本走势</figcaption></a></figure>'
+			          +'<figure><a href="/fenxi/chart.jsp?lottery=FC_3D&type=181"><img src="/static/images/tb3d02.png"><figcaption>和值走势</figcaption></a></figure>'
+			          +'<figure><a href="/fenxi/chart.jsp?lottery=FC_3D&type=180"><img src="/static/images/tb3d03.png"><figcaption>定位走势</figcaption></a></figure>'
+			          +'<figure><a href="/fenxi/chart.jsp?lottery=FC_3D&type=182"><img src="/static/images/tb3d04.png"><figcaption>跨度走势</figcaption></a></figure>';
+				$("#fx_sj").show();
+				$("#fx_lt_3d").show();
+			}
+			if(this.lottery=="FC_QLC"){
+				$(".qh03").addClass("dq");
+				lotteryName='七乐彩';
+				tbInfo='<figure class="first"><a href="/fenxi/chart.jsp?lottery=FC_QLC"><img src="/static/images/tbqlc01.png"><figcaption>红球走势图</figcaption></a></figure>';
+				$("#fx_lt_qlc").show();
+			}
+			$("#fx_tb").html(tbInfo);
+			this.get_main_num();
+		}if(this.act=='fenxi'){
+			var lotName='';
+			if(this.lottery == ""||this.lottery == "FC_SSQ"){
+				this.lottery = "FC_SSQ";
+				lotName = '双色球';
+			}else if(this.lottery=='FC_3D'){
+				lotName = '3D';
+			}else if(this.lottery=='FC_QLC'){
+				lotName = '七乐彩';
+			}
+			$("#lotteryName").html(lotName);
+			this.get_jh_list(20,1);
+		}if(this.act=='chart'){
+			change_middle_nav("");
+			this.get_chart();
+		}
+	},query:function(busiCode,pageSize,pageNo){
+		var url="/clienth5.do";
+		var infoStr = {},param={};
+		param.lottery=this.lottery;
+		param.transactionType="8050";
+		if(pageSize!=''){
+			param.pageNo=pageNo;
+			param.pageSize=pageSize;
+		}
+		param.busiCode=busiCode;
+		param.src = html5src; 
+		$.ajax({
+			url:url,
+			data:param,
+			dataType: "json",
+			async:false,
+			success:function(dataObj){
+				if(dataObj !== "") {
+					infoStr = dataObj;
+				}
+			}
+		});
+		return infoStr;
+	},query1:function(param){
+		var url="/clienth5.do";
+		var infoStr = "";
+		if(param != "") {
+			param.src = html5src; 
+			$.ajax({
+				url:url,
+				data:param,
+				dataType: "json",
+				async:false,
+				success:function(dataObj){
+					if(dataObj !== "" ) {
+						infoStr = dataObj;
+					}
+				}
+			});
+		}
+		return infoStr;
+	},
+	get_main_num:function(){
+		var str = this.query("300501",'', '');
+		var infoStr='';
+		if(str.dataList!=undefined&&str.dataList!=''){
+			$.each(str.dataList,function(k,v){
+				if(k==0){
+					infoStr+='<section class="first"';
+				}else{
+					infoStr+='<section';
+				}
+				infoStr+='><a href="'+v.url+'"><h3>';
+				var title = v.title;
+				if(title.indexOf('】')>0){
+					title = title.split('】');
+					infoStr+='<span class="cr'+(k+1)+'">'+title[0]+'】</span>'+title[1];
+				}else{
+					infoStr+=title;
+				}
+				var con = v.summary;
+				if((v.summary).length>30){
+					con= (v.summary).substr(0,30)+"…";
+				}
+				infoStr+='</h3><p>'+con+'</p></a></section>';
+			});
+			infoStr+='<div class="more0"><a href="fenxi.jsp?lottery='+fenxi.lottery+'">进入';
+			if(fenxi.lottery == "FC_SSQ"){
+				infoStr+='双色球';
+			}if(fenxi.lottery == "FC_3D"){
+				infoStr+='福彩3D';
+			}if(fenxi.lottery == "FC_QLC"){
+				infoStr+='七乐彩';
+			}
+			infoStr+='荐号<img src="/static/images/jtr.png"></a></div>';
+			$("#fx_list").html(infoStr);
+		}
+	},
+	get_jh_list:function(pageSize,pageNo){
+		var str = this.query("300502",pageSize,pageNo);
+		var infoStr='<ul class="jhlb">';
+		if(str.dataList != undefined && str.dataList != "") {
+			var i=0;
+			$.each(str.dataList,function(k,v){
+				var con = v.summary
+				if((v.summary).length>35){
+					con = (v.summary).substr(0,35)+"…";
+				}
+				if(k<3&&pageNo==1){
+					var src = '';
+					if(str.lottery=='FC_SSQ'){
+						src = '/static/images/analysis_ssq0'+(k+1)+'.png';
+					}else if(str.lottery=='FC_3D'){
+						src = '/static/images/analysis_3d0'+(k+1)+'.png';
+					}else if(str.lottery=='FC_QLC'){
+						src = '/static/images/analysis_7lc0'+(k+1)+'.png';
+					}
+					infoStr+='<li><a href="'+v.url+'"><img src="'+src+'">';
+					if((v.summary).length>20){
+						con = (v.summary).substr(0,20)+"…";
+					}
+				}else{
+					if(k%4==3){
+						i=1;
+					}
+					infoStr+='<li class="wu0 wu0'+i+'"><a href="'+v.url+'">';
+					i++;
+				}
+				infoStr+='<h3>'+v.title+'</h3><p>'+con+'</p></a><time>'+format_date(v.publishDate)+'</time></li>';
+			});
+			infoStr+='</ul>';
+			var allPage = str.totalPage;
+			if(allPage>pageNo){
+				infoStr+='<div class="more0" id="moreList">查看更多<img src="/static/images/jtb.png" ></div>';
+			}
+			$("#jhList").append(infoStr);
+			$("#moreList").click(function(){
+				$("#moreList").remove();
+				fenxi.get_jh_list(pageSize, pageNo+1);
+			});
+		}
+	},
+	get_chart:function(){
+		var chartObj = {
+				'FC_JLK3':{'name':'新快三','chart':{'100':'基本走势','101':'和值走势'},'type':'100'},
+				'FC_NMK3':{'name':'内蒙快三','chart':{'110':'基本走势','111':'和值走势'},'type':'110'},
+				'TC_JX11X5':{'name':'11选5','chart':{'120':'基本走势','121':'前三走势'},'type':'120'},
+				'TC_11X5':{'name':'十一运','chart':{'130':'基本走势','131':'前三走势'},'type':'130'},
+				'FC_CQSSC':{'name':'旧时时彩','chart':{'140':'五星走势','141':'三星走势','142':'大小单双'},'type':'140'},
+				'FC_SSC':{'name':'新时时彩','chart':{'150':'五星走势','151':'三星走势','152':'大小单双'},'type':'150'},
+				'FC_KLSF':{'name':'快乐十分','chart':{'160':'综合走势','161':'定位走势'},'type':'160'},
+				'FC_SSQ':{'name':'双色球','chart':{'170':'红球走势','171':'蓝球走势'},'type':'170'},
+				'FC_3D':{'name':'福彩3D','chart':{'180':'定位走势','181':'和值走势','182':'跨度走势','183':'基本走势','184':'和值遗漏','185':'单选单码','186':'奇偶遗漏','187':'跨度遗漏','188':'组选单码','189':'大小遗漏','1890':'单选012','1891':'组选012'},'type':'180'},
+				'FC_QLC':{'name':'七乐彩','chart':{'190':'综合走势'},'type':'190'},
+				'TC_CJDLR':{'name':'超级大乐透','chart':{'200':'前区走势','201':'后区走势'},'type':'200'},
+				'TC_QXC':{'name':'七星彩','chart':{'210':'定位走势'},'type':'210'},
+				'TC_PL3':{'name':'排列三','chart':{'220':'定位走势','221':'和值走势','222':'跨度走势','223':'基本走势'},'type':'220'},
+				'TC_PL5':{'name':'排列五','chart':{'230':'定位走势'},'type':'230'},
+				'FC_JSK3':{'name':'江苏快三','chart':{'240':'基本走势','241':'和值走势'},'type':'240'},
+				'TC_KLPK3':{'name':'快乐扑克','chart':{'250':'基本走势'},'type':'250'},
+		};
+		if(this.type==''){
+			this.type=chartObj[this.lottery].type;
+		}
+		var t= chartObj[this.lottery].name+chartObj[this.lottery].chart[this.type];
+		$("#c_title span").html(t);
+		var c_list = '';
+		$.each(chartObj[this.lottery].chart,function(k,v){
+			if(k==fenxi.type){
+				c_list+='<li class="dq">';
+			}else{
+				c_list+='<li>';
+			}
+			c_list+='<a href="chart.jsp?lottery='+fenxi.lottery+'&type='+k+'">'+v+'</a></li>';
+		});
+		$("#c_list").html(c_list);
+		var param = {};
+		param.lottery=this.lottery;
+		param.type=this.type;
+		param.isZip='1';
+		param.transactionType='300504';
+		var str=this.query1(param);
+		$("#dd").attr("src",str.url);
+	}
+};

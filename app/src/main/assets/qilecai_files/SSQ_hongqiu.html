@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)http://b.zhcw.com/chart/ZSSQ/SSQ_hongqiu.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,user-scalable=yes">
+<title>双色球红球走势图</title>
+
+<style type="text/css">
+
+.tubiao{ width:100%; overflow: scroll;}
+table{ border-collapse:collapse;border-top:none;}
+
+td{ text-align:center; border:1px solid #e1e1e1; font:14px/30px '微软雅黑'; color:#333;}
+td span,.tubiao td strong{ white-space:nowrap;}
+thead td,.btou td{ min-width:18px; height:50px; padding:0 8px; font:14px/50px '微软雅黑'; background:#f3f3f3; border-top:none; border-bottom-color:#aaa;}
+thead .xh,thead .xh td{ height:25px; line-height:25px;}
+thead .xh[colspan]{ border-bottom-color:#e1e1e1;}
+thead strong,.btou strong{ font-weight:normal;}
+.qh{ border-right-color:#aaa;}
+.kjhm{ border-right-color:#aaa;}
+thead .qh strong,.btou .qh strong{ padding-right:10px; background:url(../images/pxu.png) no-repeat right center; background-size: 10px auto;}
+thead .kjhm strong,.btou .kjhm strong{ padding-right:17px; background:url(../images/jtb.png) no-repeat right center; background-size:13px auto;}
+
+tbody td{ height:30px; font:14px/30px 'Arial'; color:#ccc;}
+tbody tr:nth-of-type(even){ background:#f3f3f3;}
+tbody tr:nth-of-type(5n+5) td{ border-bottom-color:#aaa;}
+tbody tr:last-child td{ border-bottom-color:#aaa;}
+tbody .qh{ padding:0 5px; color:#333;}
+tbody .kjhm{ padding:0 8px; white-space:nowrap; color:#e83030;}
+tbody .kjhm span{ color:#1290e4;}
+.tubiao tbody tr:nth-of-type(odd) td{ background:#fff;}
+
+tfoot td{ height:30px; color:#ff8643}
+tfoot td[colspan]{ color:#333; border-right-color:#aaa;}
+.btou td{background:#fff; color:#333; border-top-color:#aaa !important;}
+tfoot .xh td,.btou .xh{height:25px; line-height:25px;}
+tfoot .xh[colspan]{ border-bottom-color:#e1e1e1;}
+
+/*.zjh,.zjl,.zjv{ width:30px; height:30px; margin:0 auto; color:#fff; border-radius:50%; background:#fd2f46;}
+.zjl{ background:#429fff;}
+.tsh{ background:#ff8544;}
+.zjv{ background:#38c96e;}*/
+
+.zjh div,.zjl div,.zjv div{ width:30px; height:30px; margin:0 auto; color:#fff; border-radius:50%; background:#fd2f46;}
+.zjl div{ background:#429fff;}
+.tsh div{ background:#ff8544;}
+.zjv div{ background:#38c96e;}
+
+.ssqhq thead td:nth-of-type(13),.ssqhq thead td:nth-of-type(24),.ssqhq tbody td:nth-of-type(13),.ssqhq tbody td:nth-of-type(24),.ssqhq .btou td:nth-of-type(13),.ssqhq .btou td:nth-of-type(24),.ssqhq tfoot td:nth-of-type(12),.ssqhq tfoot td:nth-of-type(23){ border-right-color:#aaa;}
+.ssqhq .btou td:nth-of-type(12),.ssqhq .btou td:nth-of-type(23){ border-right-color:#e1e1e1;}
+
+
+.ssqlq thead td:nth-of-type(10),.ssqlq tbody td:nth-of-type(10),.ssqlq .btou td:nth-of-type(10),.ssqlq tfoot td:nth-of-type(9){ border-right-color:#aaa;}
+.ssqlq .btou td:nth-of-type(9){ border-right-color:#e1e1e1;}
+
+.sjhm{ padding:0 8px; color:#9e9e9e; border-right-color:#aaa;}
+
+.d3hz thead td:nth-of-type(12),.d3hz thead td:nth-of-type(21),.d3hz tbody td:nth-of-type(13),.d3hz tbody td:nth-of-type(22),.d3hz .btou td:nth-of-type(12),.d3hz .btou td:nth-of-type(21),.d3hz tfoot td:nth-of-type(11),.d3hz tfoot td:nth-of-type(20){ border-right-color:#aaa;}
+.d3hz .btou td:nth-of-type(11),.d3hz .btou td:nth-of-type(20){ border-right-color:#e1e1e1;}
+
+
+.d3dw{}
+
+</style>
+
+<script type="text/javascript">
+var asc = 1;
+var Convas;
+function init() {
+	xsfzx();
+	dis();
+	disOrEn();
+	
+	//画横连
+	zhilianzong("data_body", 1, 33, true, "zjh", "zjh", "zjh tsh");
+	zhilianheng("data_body", 1, 33, true, "zjh", "zjh", "zjh tsh")
+	//画斜连
+	fanxie("data_body", 1, 33, true, "zjh", "zjh", "zjh tsh"); //组选分布反斜连 
+	zhengxie("data_body", 1, 33, true, "zjh", "zjh", "zjh tsh");//组选分布正斜连 
+}
+
+
+
+//显示横连
+//tableid表示要操作的数据对象、 begincol表示操作数据区的起始列、endcol 表示操作数据区的结束列、flag表示是显示还是取消,forecolor_main 表示当前开奖号码的样式、forecolor_tb 表示当前开奖特别号的样式、
+//changecolor 表示将要变成横连的球样式
+function zhilianheng(table, begincol, endcol, flag,forecolor_main,forecolor_tb,changecolor) {
+	
+	var vtable = document.getElementById(table);
+	var t = 0, k = 0;
+	//连接横坐标
+	for (j = 0; j != vtable.getElementsByTagName("tr").length; j = j + 1) {//行扫描
+		for (i = begincol; i <= endcol; i = i + 1) {//列扫描  
+			if (vtable.rows[j].cells[i].className.indexOf("zjh") != -1 || vtable.rows[j].cells[i].className.indexOf("zjh tsh") != -1) {
+				t = t + 1;
+			} else {
+				if (t >= 3) {
+					for (m = t, k = i - 1; m > 0; k = k - 1, m = m - 1) {
+						if (flag) {
+							vtable.rows[j].cells[k].className = vtable.rows[j].cells[k].className.replace(vtable.rows[j].cells[k].className.split(' ')[0], changecolor);
+						} else {
+							if(vtable.rows[j].cells[k].getAttribute('id')=='blue'){
+								vtable.rows[j].cells[k].className = vtable.rows[j].cells[k].className.replace(vtable.rows[j].cells[k].className.split(' ')[0], forecolor_tb);
+							}else{
+								vtable.rows[j].cells[k].className = vtable.rows[j].cells[k].className.replace(vtable.rows[j].cells[k].className.split(' ')[0], forecolor_main);
+							}
+						}
+					}
+					t = 0;
+				} else {
+					t = 0;
+				}
+				t = 0;
+			}
+		}
+		if (t >= 3) {//如果列大于制定的列推出循环时，查看是否t已经大于2（此if为外面的补充）
+			for (m = t, k = i - 1; m > 0; k = k - 1, m = m - 1) {
+				if (flag) {
+					vtable.rows[j].cells[k].className = vtable.rows[j].cells[k].className.replace(vtable.rows[j].cells[k].className.split(' ')[0], changecolor);
+				} else {
+					if(vtable.rows[j].cells[k].getAttribute('id')=='blue'){
+						vtable.rows[j].cells[k].className = vtable.rows[j].cells[k].className.replace(vtable.rows[j].cells[k].className.split(' ')[0], forecolor_tb);
+					}else{
+						vtable.rows[j].cells[k].className = vtable.rows[j].cells[k].className.replace(vtable.rows[j].cells[k].className.split(' ')[0], forecolor_main);
+					}
+				}
+			}
+			t = 0;
+		}
+		t = 0;
+	}
+}
+
+//显示直连
+//tableid表示要操作的数据对象、 begincol表示操作数据区的起始列、endcol 表示操作数据区的结束列、flag表示是显示还是取消,forecolor_main 表示当前开奖号码的样式、forecolor_tb 表示当前开奖特别号的样式、
+//changecolor 表示将要变成横连的球样式
+function zhilianzong(table, begincol, endcol, flag,forecolor_main,forecolor_tb,changecolor) {
+	
+	//组选直选 纵坐标
+	var vtable = document.getElementById(table);
+
+	for (i = begincol, t = 0; i <= endcol; i = i + 1) {//列扫描
+		for (j = 0; j != vtable.getElementsByTagName("tr").length; j = j + 1) {//列扫描
+			if (vtable.rows[j].cells[i].className.indexOf("zjh") != -1  || vtable.rows[j].cells[i].className.indexOf("zjh tsh") != -1) {
+				t = t + 1;
+			} else {
+				if (t >= 3) {
+					for (m = t, k = j - 1; m > 0; k = k - 1, m = m - 1) {
+						if (flag == true) {
+							vtable.rows[k].cells[i].className = vtable.rows[k].cells[i].className.replace(vtable.rows[k].cells[i].className.split(' ')[0], changecolor);
+						} else {
+							if(vtable.rows[k].cells[i].getAttribute('id')=='blue'){
+								vtable.rows[k].cells[i].className = vtable.rows[k].cells[i].className.replace(vtable.rows[k].cells[i].className.split(' ')[0], forecolor_tb);
+							}else{
+								vtable.rows[k].cells[i].className = vtable.rows[k].cells[i].className.replace(vtable.rows[k].cells[i].className.split(' ')[0], forecolor_main);
+							}
+						}
+					}
+					t = 0;
+				} else {
+					t = 0;
+				}
+			}
+		}
+		if (t >= 3) {//当vtable.rows[j].cells[0].innerText为空时如果t>2则执行此方法。
+			for (m = t, k = j - 1; m > 0; k = k - 1, m = m - 1) {
+				if (flag == true) {
+					vtable.rows[k].cells[i].className = vtable.rows[k].cells[i].className.replace(vtable.rows[k].cells[i].className.split(' ')[0],changecolor);
+				} else {
+					if(vtable.rows[k].cells[i].getAttribute('id')=='blue'){
+						vtable.rows[k].cells[i].className = vtable.rows[k].cells[i].className.replace(vtable.rows[k].cells[i].className.split(' ')[0], forecolor_tb);
+					}else{
+						vtable.rows[k].cells[i].className = vtable.rows[k].cells[i].className.replace(vtable.rows[k].cells[i].className.split(' ')[0], forecolor_main);
+					}
+				}
+			}
+			t = 0;
+		}
+		t = 0;
+	}
+}
+
+//显示反斜杠(组选、直选)正式
+//tableid表示要操作的数据对象、 begincol表示操作数据区的起始列、endcol 表示操作数据区的结束列、flag表示是显示还是取消,forecolor_main 表示当前开奖号码的样式、forecolor_tb 表示当前开奖特别号的样式、
+//changecolor 表示将要变成横连的球样式
+function fanxie(table, begincol, endcol, flag,forecolor_main,forecolor_tb,changecolor) {
+	var vtable = document.getElementById(table);
+	var t = 0, k = 0;//t用于存具有相同样式且相连的方框数量
+	var h = 0, l = 0;
+	//连接横坐标 vtable.rows[j].cells[0].innerText != " "  取得序列号为空的进行判断，是否到了最后。
+	for (j = 0; j != vtable.getElementsByTagName("tr").length; j = j + 1) {//行扫描
+		for (i = begincol; i <= endcol - 2; i = i + 1) {//斜扫描
+			   //列的样式为黄球 并且未到列的边界值
+			for (h = j, l = i; h != vtable.getElementsByTagName("tr").length && (l <= endcol) && (vtable.rows[h].cells[l].className.indexOf("zjh") != -1 || vtable.rows[h].cells[l].className.indexOf("zjh tsh") != -1) ; h = h + 1, l = l + 1) {
+				t = t + 1;
+			}
+			if (t > 2) {
+				for (h = h - 1, l = l - 1; t > 0; h = h - 1, l = l - 1, t = t - 1) {
+					if (flag) {
+						vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], changecolor);
+					}else {
+						if(vtable.rows[h].cells[l].getAttribute('id')=='blue'){
+							vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], forecolor_tb);
+						}
+						else{
+							vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], forecolor_main);
+						}
+					}
+				}
+			}
+			t = 0;
+		}
+	}
+}
+//显示斜杠(zhengxie)
+//tableid表示要操作的数据对象、 begincol表示操作数据区的起始列、endcol 表示操作数据区的结束列、flag表示是显示还是取消,forecolor_main 表示当前开奖号码的样式、forecolor_tb 表示当前开奖特别号的样式、
+//changecolor 表示将要变成横连的球样式
+function zhengxie(table, begincol, endcol, flag,forecolor_main,forecolor_tb,changecolor) {
+	var vtable = document.getElementById(table);
+	var t = 0, k = 0;//t用于存具有相同样式且相连的方框数量
+	var h = 0, l = 0;
+	
+	//连接横坐标 vtable.rows[j].cells[0].innerText != " "  取得序列号为空的进行判断，是否到了最后。
+	for (j = 0; j != vtable.getElementsByTagName("tr").length; j = j + 1) {//行扫描
+		for (i = begincol; i <= endcol; i = i + 1) {//列扫描
+			   //列的样式为黄球 并且未到列的边界值
+			for (h = j, l = i; h != vtable.getElementsByTagName("tr").length && (h >= 0) && (l <= endcol) && (l >= begincol) && (vtable.rows[h].cells[l].className.indexOf("zjh") != -1 || vtable.rows[h].cells[l].className.indexOf("zjh tsh") != -1) ; h = h + 1, l = l - 1) {
+				t = t + 1;
+			}
+			if (t > 2) {
+				for (h = h - 1, l = l + 1; l <= endcol && l >= begincol && t > 0; h = h - 1, l = l + 1, t = t - 1) {
+					if (flag) {
+						vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], changecolor);
+					} else {
+						if(vtable.rows[h].cells[l].getAttribute('id')=='blue'){
+							vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], forecolor_tb);
+						}
+						else{
+							vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], forecolor_main);
+						}
+					}
+				}
+			}
+			t = 0;
+		}
+		if (t > 2) {
+			for (h = h - 1, l = l + 1; l <= endcol && l >= begincol && t > 0; h = h - 1, l = l + 1, t = t - 1) {
+				if (flag) {
+					vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], changecolor);
+				} else {
+					if(vtable.rows[h].cells[l].getAttribute('id')=='blue'){
+						vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0],forecolor_tb);
+					}
+					else{
+						vtable.rows[h].cells[l].className = vtable.rows[h].cells[l].className.replace(vtable.rows[h].cells[l].className.split(' ')[0], forecolor_main);
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+function dis(){
+	var selectNum = document.getElementById("selectNumber").value;
+	
+	var chuxiansan =  document.getElementById("sanshi");//出现次数30期
+	var chuxianwu = document.getElementById("wushi")//出现次数50期
+	
+	var lianchusan = document.getElementById("lianchusan");//最大连出30期
+	var lianchuwu = document.getElementById("lianchuwu");//最大连出50期
+
+	var zuidasan = document.getElementById("zuidasan");//最大遗漏30期
+	var zuidawu = document.getElementById("zuidawu");//最大遗漏50期
+
+	var pingjunsan = document.getElementById("pingjunsan");//平均遗漏30期
+	var pingjunwu = document.getElementById("pingjunwu");//平均遗漏50期
+	
+	
+	
+	if(selectNum==30){
+		chuxiansan.style.display = ''; 
+		chuxianwu.style.display = 'none'; 
+		
+		lianchusan.style.display = ''; 
+		lianchuwu.style.display = 'none'; 
+
+		zuidasan.style.display = ''; 
+		zuidawu.style.display = 'none'; 
+
+		pingjunsan.style.display = ''; 
+		pingjunwu.style.display = 'none'; 
+		
+	}
+	if(selectNum==50){
+		chuxiansan.style.display = 'none'; 
+		chuxianwu.style.display = ''; 
+
+		lianchusan.style.display = 'none'; 
+		lianchuwu.style.display = ''; 
+
+		zuidasan.style.display = 'none'; 
+		zuidawu.style.display = ''; 
+
+		pingjunsan.style.display = 'none'; 
+		pingjunwu.style.display = ''; 
+		
+	}
+	
+}
+
+
+function dis1(){
+	var selectNum = document.getElementById("selectNumber2").value;
+	
+	var chuxiansan =  document.getElementById("sanshi");//出现次数30期
+	var chuxianwu = document.getElementById("wushi")//出现次数50期
+	
+	var lianchusan = document.getElementById("lianchusan");
+	var lianchuwu = document.getElementById("lianchuwu");
+
+	var zuidasan = document.getElementById("zuidasan");
+	var zuidawu = document.getElementById("zuidawu");
+
+	var pingjunsan = document.getElementById("pingjunsan");
+	var pingjunwu = document.getElementById("pingjunwu");
+	
+	
+	
+	if(selectNum==30){
+		chuxiansan.style.display = ''; 
+		chuxianwu.style.display = 'none'; 
+		
+		lianchusan.style.display = ''; 
+		lianchuwu.style.display = 'none'; 
+
+		zuidasan.style.display = ''; 
+		zuidawu.style.display = 'none'; 
+
+		pingjunsan.style.display = ''; 
+		pingjunwu.style.display = 'none'; 
+		
+	}
+	if(selectNum==50){
+		chuxiansan.style.display = 'none'; 
+		chuxianwu.style.display = ''; 
+
+		lianchusan.style.display = 'none'; 
+		lianchuwu.style.display = ''; 
+		
+		zuidasan.style.display = 'none'; 
+		zuidawu.style.display = ''; 
+
+		pingjunsan.style.display = 'none'; 
+		pingjunwu.style.display = ''; 
+		
+	}
+}
+
+
+function sort(){
+	var vtable = document.getElementById("data_body");
+	var l = vtable.rows.length;
+	var a = document.getElementById("selectNumber").value;
+	for (i = l-a; i<=l-a/2-1; i++){
+		for(j = 0;j<vtable.rows[0].cells.length;j++){
+			var temp1 ;
+			var temp2 ;
+		    temp1 = vtable.rows[i].cells[j].innerHTML;
+		    temp2 = vtable.rows[i].cells[j].className;
+		    vtable.rows[i].cells[j].innerHTML = vtable.rows[l-i+l-a-1].cells[j].innerHTML;
+		    vtable.rows[i].cells[j].className = vtable.rows[l-i+l-a-1].cells[j].className;
+		    vtable.rows[l-i+l-a-1].cells[j].innerHTML = temp1;
+		    vtable.rows[l-i+l-a-1].cells[j].className = temp2;
+		}  
+	}
+	if(asc==0){
+		asc=1;
+	}else if(asc==1){
+		asc=0;
+	}
+
+	
+	asc_check();
+}
+
+
+function asc_check(){
+	
+	if(asc==0){
+		document.getElementById('img1').src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAARCAYAAADpPU2iAAABEklEQVQokd2PvU7DMBSFL2ulDDwXKyNjJhLjn8aJS6tCy8qbJbEVNYlKkZCyZPFDHAaSqLRF3TnSla51vs+WiU7SHg53z+sNlus3NJ9f96c9gehm3Ov2I1TpArHUiKXGPF2iafYPZxIR0a5uIeYGscwQiWSSuMrgdnv+C67qOpTaIBIJHmWGWGZgQiMSCZgy4IlBVbfhALehTBbDrdkwGjFPwFSKSKSIpYbUg2RWL2DKTPCTTMGEns5MGTD1I2WrV1z8z7+Pc44XRbEtiuL92lhrDXVddzsIuDJb731ARETe+6Asy6k83s/gMd77YHwpz3OUZYk8zy/Dx5K11oyStdb8CY/p+37mnONVVfG+72en/TdiWiC+q2QmwAAAAABJRU5ErkJggg==';
+		document.getElementById('img2').src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAARCAYAAADpPU2iAAABEklEQVQokd2PvU7DMBSFL2ulDDwXKyNjJhLjn8aJS6tCy8qbJbEVNYlKkZCyZPFDHAaSqLRF3TnSla51vs+WiU7SHg53z+sNlus3NJ9f96c9gehm3Ov2I1TpArHUiKXGPF2iafYPZxIR0a5uIeYGscwQiWSSuMrgdnv+C67qOpTaIBIJHmWGWGZgQiMSCZgy4IlBVbfhALehTBbDrdkwGjFPwFSKSKSIpYbUg2RWL2DKTPCTTMGEns5MGTD1I2WrV1z8z7+Pc44XRbEtiuL92lhrDXVddzsIuDJb731ARETe+6Asy6k83s/gMd77YHwpz3OUZYk8zy/Dx5K11oyStdb8CY/p+37mnONVVfG+72en/TdiWiC+q2QmwAAAAABJRU5ErkJggg==';
+	}else if(asc==1){			
+		document.getElementById('img1').src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAARCAYAAADpPU2iAAABF0lEQVQokd2QvU7DQBCEjzaSC56LlpLSFba5n/jsC4kChJY38/pOVmwrBAnJjZt7iKFwbEIQSc9II+1pv9k9LWMn6vt+5pzjVVXxvu9np/0f8t4H1lpDRCiKAtZa470P/oSJaDPCZVmiKAoQ0eZXyHsflGUJIgIR4bg++DvUdd31OPmCh5Bzjh8Cb5dsrTVnj/BvZVZPSJRBLHPEMseDzJAIPb0TZZCoDLHUyFfPYFXdhjJdIBLpBMVSI+YpEpUhEgMstUFVtyFjjLGqrkOpDSKR4n6cLDQikSJRBjw9gkdt6xZiPnxt2KYRSw2ucrjtjk8gGLsa67p9D1W2mOB5tkTT7O7OHqHd728e1y9Yrl/RfHzenva/AFqzIL4LkbRiAAAAAElFTkSuQmCC';
+		document.getElementById('img2').src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAARCAYAAADpPU2iAAABF0lEQVQokd2QvU7DQBCEjzaSC56LlpLSFba5n/jsC4kChJY38/pOVmwrBAnJjZt7iKFwbEIQSc9II+1pv9k9LWMn6vt+5pzjVVXxvu9np/0f8t4H1lpDRCiKAtZa470P/oSJaDPCZVmiKAoQ0eZXyHsflGUJIgIR4bg++DvUdd31OPmCh5Bzjh8Cb5dsrTVnj/BvZVZPSJRBLHPEMseDzJAIPb0TZZCoDLHUyFfPYFXdhjJdIBLpBMVSI+YpEpUhEgMstUFVtyFjjLGqrkOpDSKR4n6cLDQikSJRBjw9gkdt6xZiPnxt2KYRSw2ucrjtjk8gGLsa67p9D1W2mOB5tkTT7O7OHqHd728e1y9Yrl/RfHzenva/AFqzIL4LkbRiAAAAAElFTkSuQmCC';
+	}
+	
+}
+
+function xsfzx() {
+	var data_table = document.getElementById("data_body");
+	for (i = 0; i < data_table.rows.length; i++) {
+		k = i  + 1;
+		if (k % 5 == 0) {
+			for (p = 0; p < data_table.rows[2].cells.length; p++) {
+				data_table.rows[i].cells[p].style.borderBottom="solid 1px #b0b0b0";
+			}
+		}
+	}
+}
+
+function disOrEn(){
+	var tab = document.getElementById("data_body");
+	var a = document.getElementById("selectNumber").value;//初始为30
+	var len = tab.rows.length;//正常情况为100（不到100条数据）
+	if(len>=a){
+		for(var i=0;i<len;i++){
+			if(i<len-a){
+				tab.rows[i].style.display="none";
+			}else{
+				tab.rows[i].style.display="";
+			}
+		}
+	}else{
+		for(var i=0;i<len;i++){
+			if(i>=a){
+				tab.rows[i].style.display="none";
+			}else{
+				tab.rows[i].style.display="";
+			}
+		}	
+	}
+
+	//initCanvas();
+}
+
+function disOrEn2(){
+	var tab = document.getElementById("data_body");
+	var a = document.getElementById("selectNumber2").value;//初始为30
+	var len = tab.rows.length;//正常情况为100（不到100条数据）
+	if(len>=a){
+		for(var i=0;i<=len;i++){
+			if(i<len-a){
+				tab.rows[i].style.display="none";
+			}else{
+				tab.rows[i].style.display="";
+			}
+		}
+	}else{
+		for(var i=0;i<len;i++){
+			if(i>=a){
+				tab.rows[i].style.display="none";
+			}else{
+				tab.rows[i].style.display="";
+			}
+		}	
+	}
+
+	//initCanvas();
+}
+
+
+function  getIE(e){
+    var   t=e.offsetTop;   
+    var   l=e.offsetLeft;   
+    while(e=e.offsetParent){   
+          t+=e.offsetTop;   
+          l+=e.offsetLeft;   
+    }   
+    return   t+","+l;   
+} 
+
+function initCanvas(){
+	var os = getOs();
+	if(os!="MSIE"){
+		var vtable = document.getElementById("data_body");
+		var tbh1 = getIE(vtable.rows[0].cells[0]);
+		var tbh2 = getIE(vtable.rows[vtable.rows.length-1].cells[0]);
+		var ht = parseInt(tbh2.split(",")[0])-parseInt(tbh1.split(",")[0]);	
+		var meun = document.getElementById("data_menu");
+		px = parseInt(tbh1.split(",")[0]);
+		Convas = document.getElementById("cc");
+		if(Convas==null){
+			Convas=document.createElementNS('http://www.w3.org/1999/xhtml', 'html:canvas');
+			Convas.id = "cc";
+			Convas.setAttribute("width",vtable.clientWidth);
+			//Convas.setAttribute("height",ht);
+			Convas.setAttribute("height",vtable.clientHeight);
+			v1=getIE(vtable);
+			vArray=v1.split(",");
+			//Convas.setAttribute("style",'z-index:1;top:'+parseInt(0)+px+'px;left:'+parseInt(vArray[1])+'px;position:absolute;');
+			Convas.setAttribute("style",'z-index:1;top:'+parseInt(0)+meun.offsetHeight+'px;left:'+parseInt(vArray[1])+'px;position:absolute;');
+			vtable.appendChild(Convas);	
+		}else{
+			//ctx.clearRect(0,0,Convas.width,Convas.height);
+			Convas.setAttribute("width",vtable.clientWidth);
+			Convas.setAttribute("height",vtable.clientHeight);
+			v1=getIE(vtable);
+			vArray=v1.split(",");
+			//Convas.setAttribute("style",'z-index:1;top:'+parseInt(0)+px+'px;left:'+parseInt(vArray[1])+'px;position:absolute;');
+			Convas.setAttribute("style",'z-index:1;top:'+parseInt(0)+meun.offsetHeight+'px;left:'+parseInt(vArray[1])+'px;position:absolute;');
+		}
+	}
+}
+function getOs(){  
+	var OsObject = "";  
+	if(navigator.userAgent.indexOf("MSIE")>0) {  
+	    return "MSIE";  
+	}  
+} 
+
+
+function paixu(){
+	if(asc==0){
+		sort();
+	}
+}
+</script> 
+</head>
+
+<body onload="init()">
+
+
+  <table class="ssqhq" style="margin-top: -8px;margin-left:-8px;width: 1380px;">
+    <thead>
+      <tr>
+        <td class="qh" width="84"><strong>期号</strong><img id="img1" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAARCAYAAADpPU2iAAABF0lEQVQokd2QvU7DQBCEjzaSC56LlpLSFba5n/jsC4kChJY38/pOVmwrBAnJjZt7iKFwbEIQSc9II+1pv9k9LWMn6vt+5pzjVVXxvu9np/0f8t4H1lpDRCiKAtZa470P/oSJaDPCZVmiKAoQ0eZXyHsflGUJIgIR4bg++DvUdd31OPmCh5Bzjh8Cb5dsrTVnj/BvZVZPSJRBLHPEMseDzJAIPb0TZZCoDLHUyFfPYFXdhjJdIBLpBMVSI+YpEpUhEgMstUFVtyFjjLGqrkOpDSKR4n6cLDQikSJRBjw9gkdt6xZiPnxt2KYRSw2ucrjtjk8gGLsa67p9D1W2mOB5tkTT7O7OHqHd728e1y9Yrl/RfHzenva/AFqzIL4LkbRiAAAAAElFTkSuQmCC" onclick="sort()"></td>
+        <td class="kjhm">
+        	<select style="border: none;background: #f3f3f3;" id="selectNumber" name="" size="1" onclick="paixu()" onchange="dis(),selectNumber2.options[selectedIndex].selected=true,disOrEn()">
+    			<option value="30" selected="selected">近30期开奖号码</option>
+   				<option value="50">近50期开奖号码</option>
+  			</select> 
+        </td>
+        <td>01</td>
+        <td>02</td>
+        <td>03</td>
+        <td>04</td>
+        <td>05</td>
+        <td>06</td>
+        <td>07</td>
+        <td>08</td>
+        <td>09</td>
+        <td>10</td>
+        <td>11</td>
+        <td>12</td>
+        <td>13</td>
+        <td>14</td>
+        <td>15</td>
+        <td>16</td>
+        <td>17</td>
+        <td>18</td>
+        <td>19</td>
+        <td>20</td>
+        <td>21</td>
+        <td>22</td>
+        <td>23</td>
+        <td>24</td>
+        <td>25</td>
+        <td>26</td>
+        <td>27</td>
+        <td>28</td>
+        <td>29</td>
+        <td>30</td>
+        <td>31</td>
+        <td>32</td>
+        <td>33</td>
+      </tr>
+    </thead>
+    <tbody id="data_body">
+      <tr id="rowId0" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>112</td><td class="kjhm">03 10 14 16 22 23 <font color="#0066FF">11</font></td><td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">13</td>
+<td class="zjh"><div>3</div></td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>10</div></td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">18</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>16</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>22</div></td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">9</td>
+</tr><tr id="rowId1" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>113</td><td class="kjhm">04 06 16 27 29 33 <font color="#0066FF">05</font></td><td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>4</div></td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">19</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>16</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh tsh"><div>27</div></td>
+<td style="color:#a1a1a1">12</td>
+<td class="zjh"><div>29</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>33</div></td>
+</tr><tr id="rowId2" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>114</td><td class="kjhm">06 12 13 15 18 26 <font color="#0066FF">13</font></td><td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">15</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">13</td>
+<td class="zjh"><div>12</div></td>
+<td class="zjh"><div>13</div></td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>15</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>18</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh tsh"><div>26</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId3" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>115</td><td class="kjhm">04 10 11 25 30 31 <font color="#0066FF">01</font></td><td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">16</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>4</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh"><div>10</div></td>
+<td class="zjh"><div>11</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">15</td>
+<td class="zjh tsh"><div>25</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>30</div></td>
+<td class="zjh"><div>31</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+</tr><tr id="rowId4" style="display: none;"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>116</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">02 14 20 22 30 32 <font color="#0066FF">02</font></td><td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>2</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>14</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>20</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>22</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">16</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">15</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>30</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>32</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+</tr><tr id="rowId5" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>117</td><td class="kjhm">01 02 08 11 14 21 <font color="#0066FF">09</font></td><td class="zjh"><div>1</div></td>
+<td class="zjh"><div>2</div></td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">9</td>
+<td class="zjh"><div>8</div></td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>11</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh tsh"><div>14</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>21</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">16</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+</tr><tr id="rowId6" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>118</td><td class="kjhm">08 09 15 22 30 33 <font color="#0066FF">16</font></td><td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">10</td>
+<td class="zjh tsh"><div>8</div></td>
+<td class="zjh"><div>9</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>15</div></td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>22</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">18</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>30</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>33</div></td>
+</tr><tr id="rowId7" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>119</td><td class="kjhm">09 16 21 25 26 31 <font color="#0066FF">14</font></td><td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh tsh"><div>9</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>16</div></td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>21</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">19</td>
+<td class="zjh"><div>25</div></td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">18</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>31</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId8" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>120</td><td class="kjhm">08 10 15 19 23 28 <font color="#0066FF">16</font></td><td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">12</td>
+<td class="zjh"><div>8</div></td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh tsh"><div>10</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>15</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh"><div>19</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh tsh"><div>23</div></td>
+<td style="color:#a1a1a1">20</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>28</div></td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+</tr><tr id="rowId9" style="display: none;"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>121</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">11 18 19 22 24 32 <font color="#0066FF">07</font></td><td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">10</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">13</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh tsh tsh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>11</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">10</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>18</div></td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>19</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>22</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>24</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>32</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+</tr><tr id="rowId10" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>122</td><td class="kjhm">11 20 21 22 24 27 <font color="#0066FF">15</font></td><td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh tsh"><div>11</div></td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh tsh"><div>20</div></td>
+<td class="zjh tsh tsh"><div>21</div></td>
+<td class="zjh tsh"><div>22</div></td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>24</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>27</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+</tr><tr id="rowId11" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>123</td><td class="kjhm">04 05 06 11 21 31 <font color="#0066FF">10</font></td><td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">11</td>
+<td class="zjh tsh"><div>4</div></td>
+<td class="zjh tsh"><div>5</div></td>
+<td class="zjh tsh"><div>6</div></td>
+<td style="color:#a1a1a1">15</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh tsh"><div>11</div></td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>21</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>31</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+</tr><tr id="rowId12" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>124</td><td class="kjhm">02 06 11 26 28 29 <font color="#0066FF">03</font></td><td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>2</div></td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">16</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh tsh"><div>11</div></td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh tsh"><div>28</div></td>
+<td class="zjh"><div>29</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+</tr><tr id="rowId13" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>125</td><td class="kjhm">01 14 23 25 29 30 <font color="#0066FF">03</font></td><td class="zjh"><div>1</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">11</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>25</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>29</div></td>
+<td class="zjh"><div>30</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+</tr><tr id="rowId14" style="display: none;"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>126</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">01 16 17 21 27 30 <font color="#0066FF">16</font></td><td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>1</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">14</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">18</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">12</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">12</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>16</div></td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>17</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>21</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>27</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>30</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+</tr><tr id="rowId15" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>127</td><td class="kjhm">14 15 21 24 27 32 <font color="#0066FF">12</font></td><td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">15</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">19</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">13</td>
+<td class="zjh"><div>14</div></td>
+<td class="zjh"><div>15</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>21</div></td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>24</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>27</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>32</div></td>
+<td style="color:#a1a1a1">9</td>
+</tr><tr id="rowId16" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>128</td><td class="kjhm">02 06 13 22 29 31 <font color="#0066FF">08</font></td><td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>2</div></td>
+<td style="color:#a1a1a1">16</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">20</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">14</td>
+<td class="zjh"><div>13</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>22</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>29</div></td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>31</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">10</td>
+</tr><tr id="rowId17" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>129</td><td class="kjhm">05 06 09 14 21 33 <font color="#0066FF">02</font></td><td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh"><div>5</div></td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">21</td>
+<td style="color:#a1a1a1">9</td>
+<td class="zjh"><div>9</div></td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">15</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>21</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>33</div></td>
+</tr><tr id="rowId18" style="display: none;"><td class="qh" width="84">2017<span style="display:none">.</span>130</td><td class="kjhm">05 13 14 23 25 31 <font color="#0066FF">02</font></td><td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">18</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>5</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">22</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">16</td>
+<td class="zjh"><div>13</div></td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>25</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>31</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId19" style="display: none;"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>131</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">01 07 10 11 26 27 <font color="#0066FF">11</font></td><td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>1</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">19</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>7</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">11</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>10</div></td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>11</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">17</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">10</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">10</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>26</div></td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>27</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+</tr><tr id="rowId20"><td class="qh" width="84">2017<span style="display:none">.</span>132</td><td class="kjhm">02 03 05 09 13 28 <font color="#0066FF">11</font></td><td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>2</div></td>
+<td class="zjh"><div>3</div></td>
+<td style="color:#a1a1a1">9</td>
+<td class="zjh"><div>5</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">12</td>
+<td class="zjh"><div>9</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">18</td>
+<td class="zjh"><div>13</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>28</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">3</td>
+</tr><tr id="rowId21"><td class="qh" width="84">2017<span style="display:none">.</span>133</td><td class="kjhm">06 15 17 18 23 30 <font color="#0066FF">11</font></td><td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">19</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>15</div></td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>17</div></td>
+<td class="zjh"><div>18</div></td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>30</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">4</td>
+</tr><tr id="rowId22"><td class="qh" width="84">2017<span style="display:none">.</span>134</td><td class="kjhm">04 05 11 14 28 32 <font color="#0066FF">04</font></td><td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>4</div></td>
+<td class="zjh tsh"><div>5</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>11</div></td>
+<td style="color:#a1a1a1">20</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>28</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>32</div></td>
+<td style="color:#a1a1a1">5</td>
+</tr><tr id="rowId23"><td class="qh" width="84">2017<span style="display:none">.</span>135</td><td class="kjhm">01 06 07 14 18 26 <font color="#0066FF">16</font></td><td class="zjh"><div>1</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>6</div></td>
+<td class="zjh"><div>7</div></td>
+<td style="color:#a1a1a1">15</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">21</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>18</div></td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">6</td>
+</tr><tr id="rowId24"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>136</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">03 07 10 18 21 24 <font color="#0066FF">12</font></td><td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>3</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>7</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">16</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>10</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">22</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">10</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>18</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">15</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">14</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>21</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>24</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+</tr><tr id="rowId25"><td class="qh" width="84">2017<span style="display:none">.</span>137</td><td class="kjhm">05 10 20 23 26 31 <font color="#0066FF">03</font></td><td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>5</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh"><div>10</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">23</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">16</td>
+<td class="zjh"><div>20</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">9</td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>31</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">8</td>
+</tr><tr id="rowId26"><td class="qh" width="84">2017<span style="display:none">.</span>138</td><td class="kjhm">01 17 24 28 32 33 <font color="#0066FF">02</font></td><td class="zjh"><div>1</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">18</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">24</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">12</td>
+<td class="zjh"><div>17</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>24</div></td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh tsh"><div>28</div></td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>32</div></td>
+<td class="zjh"><div>33</div></td>
+</tr><tr id="rowId27"><td class="qh" width="84">2017<span style="display:none">.</span>139</td><td class="kjhm">02 14 20 24 28 32 <font color="#0066FF">16</font></td><td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>2</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">19</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">25</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">18</td>
+<td class="zjh"><div>20</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>24</div></td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh tsh"><div>28</div></td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>32</div></td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId28"><td class="qh" width="84">2017<span style="display:none">.</span>140</td><td class="kjhm">21 22 25 28 29 30 <font color="#0066FF">08</font></td><td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">20</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">26</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">19</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>21</div></td>
+<td class="zjh"><div>22</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>25</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">9</td>
+<td class="zjh tsh tsh"><div>28</div></td>
+<td class="zjh tsh"><div>29</div></td>
+<td class="zjh tsh"><div>30</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+</tr><tr id="rowId29"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>141</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">01 06 07 11 13 15 <font color="#0066FF">05</font></td><td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>1</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>6</div></td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>7</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">21</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>11</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">27</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>13</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>15</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">15</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">20</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">10</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+</tr><tr id="rowId30"><td class="qh" width="84">2017<span style="display:none">.</span>142</td><td class="kjhm">08 13 14 18 23 33 <font color="#0066FF">06</font></td><td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>8</div></td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">28</td>
+<td class="zjh"><div>13</div></td>
+<td class="zjh tsh"><div>14</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">16</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>18</div></td>
+<td style="color:#a1a1a1">21</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>33</div></td>
+</tr><tr id="rowId31"><td class="qh" width="84">2017<span style="display:none">.</span>143</td><td class="kjhm">04 06 09 14 20 29 <font color="#0066FF">14</font></td><td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh tsh"><div>4</div></td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>9</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">29</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>14</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">22</td>
+<td class="zjh"><div>20</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>29</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId32"><td class="qh" width="84">2017<span style="display:none">.</span>144</td><td class="kjhm">03 14 16 20 31 32 <font color="#0066FF">09</font></td><td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh tsh tsh"><div>3</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">30</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh tsh"><div>14</div></td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>16</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">23</td>
+<td class="zjh"><div>20</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>31</div></td>
+<td class="zjh"><div>32</div></td>
+<td style="color:#a1a1a1">2</td>
+</tr><tr id="rowId33"><td class="qh" width="84">2017<span style="display:none">.</span>145</td><td class="kjhm">02 06 12 17 25 28 <font color="#0066FF">12</font></td><td style="color:#a1a1a1">4</td>
+<td class="zjh tsh tsh"><div>2</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh"><div>6</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>12</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>17</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">24</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh tsh"><div>25</div></td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">14</td>
+<td class="zjh"><div>28</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+</tr><tr id="rowId34"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>146</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">01 19 25 26 27 33 <font color="#0066FF">10</font></td><td class="zjh tsh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>1</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>19</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td class="zjh tsh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>25</div></td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>26</div></td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>27</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>33</div></td>
+</tr><tr id="rowId35"><td class="qh" width="84">2017<span style="display:none">.</span>147</td><td class="kjhm">03 07 20 21 25 31 <font color="#0066FF">14</font></td><td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh tsh"><div>3</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>7</div></td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>20</div></td>
+<td class="zjh"><div>21</div></td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh tsh"><div>25</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>31</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId36"><td class="qh" width="84">2017<span style="display:none">.</span>148</td><td class="kjhm">04 07 11 14 29 32 <font color="#0066FF">12</font></td><td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh tsh"><div>4</div></td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>7</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">11</td>
+<td class="zjh"><div>11</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>29</div></td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>32</div></td>
+<td style="color:#a1a1a1">2</td>
+</tr><tr id="rowId37"><td class="qh" width="84">2017<span style="display:none">.</span>149</td><td class="kjhm">05 08 15 20 27 30 <font color="#0066FF">13</font></td><td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh tsh tsh"><div>5</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>8</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>15</div></td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>20</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>27</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>30</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+</tr><tr id="rowId38"><td class="qh" width="84">2017<span style="display:none">.</span>150</td><td class="kjhm">06 14 19 20 21 23 <font color="#0066FF">08</font></td><td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh tsh tsh"><div>6</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh tsh"><div>19</div></td>
+<td class="zjh tsh"><div>20</div></td>
+<td class="zjh tsh"><div>21</div></td>
+<td style="color:#a1a1a1">10</td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+</tr><tr id="rowId39"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2017<span style="display:none">.</span>151</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">02 05 07 09 11 27 <font color="#0066FF">16</font></td><td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>2</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>5</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh tsh tsh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>7</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>9</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">14</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>11</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">11</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">12</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>27</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+</tr><tr id="rowId40"><td class="qh" width="84">2017<span style="display:none">.</span>152</td><td class="kjhm">06 10 23 25 26 29 <font color="#0066FF">05</font></td><td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>6</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>10</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">12</td>
+<td class="zjh"><div>23</div></td>
+<td style="color:#a1a1a1">13</td>
+<td class="zjh"><div>25</div></td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td class="zjh"><div>29</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+</tr><tr id="rowId41"><td class="qh" width="84">2017<span style="display:none">.</span>153</td><td class="kjhm">07 11 12 13 18 19 <font color="#0066FF">16</font></td><td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>7</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh tsh"><div>11</div></td>
+<td class="zjh tsh"><div>12</div></td>
+<td class="zjh tsh"><div>13</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh"><div>18</div></td>
+<td class="zjh"><div>19</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">7</td>
+</tr><tr id="rowId42"><td class="qh" width="84">2017<span style="display:none">.</span>154</td><td class="kjhm">05 09 13 15 18 26 <font color="#0066FF">05</font></td><td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh"><div>5</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td class="zjh tsh"><div>9</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>13</div></td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>15</div></td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">9</td>
+<td class="zjh"><div>18</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">14</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">15</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">8</td>
+</tr><tr id="rowId43"><td class="qh" width="84">2018<span style="display:none">.</span>001</td><td class="kjhm">01 08 11 26 28 31 <font color="#0066FF">04</font></td><td class="zjh"><div>1</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh tsh"><div>8</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>11</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">15</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">16</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>28</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh tsh"><div>31</div></td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">9</td>
+</tr><tr id="rowId44"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2018<span style="display:none">.</span>002</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">07 18 24 29 31 33 <font color="#0066FF">16</font></td><td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>7</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">12</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">11</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>18</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">16</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>24</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>29</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td class="zjh tsh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>31</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>33</div></td>
+</tr><tr id="rowId45"><td class="qh" width="84">2018<span style="display:none">.</span>003</td><td class="kjhm">01 14 16 17 20 31 <font color="#0066FF">04</font></td><td class="zjh"><div>1</div></td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>16</div></td>
+<td class="zjh"><div>17</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>20</div></td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">17</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh tsh"><div>31</div></td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId46"><td class="qh" width="84">2018<span style="display:none">.</span>004</td><td class="kjhm">14 18 19 26 30 31 <font color="#0066FF">11</font></td><td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">4</td>
+<td class="zjh"><div>14</div></td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>18</div></td>
+<td class="zjh"><div>19</div></td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">18</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">6</td>
+<td class="zjh"><div>26</div></td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>30</div></td>
+<td class="zjh tsh"><div>31</div></td>
+<td style="color:#a1a1a1">10</td>
+<td style="color:#a1a1a1">2</td>
+</tr><tr id="rowId47"><td class="qh" width="84">2018<span style="display:none">.</span>005</td><td class="kjhm">02 20 21 28 31 33 <font color="#0066FF">06</font></td><td style="color:#a1a1a1">2</td>
+<td class="zjh"><div>2</div></td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">11</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>20</div></td>
+<td class="zjh"><div>21</div></td>
+<td style="color:#a1a1a1">19</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh"><div>28</div></td>
+<td style="color:#a1a1a1">3</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh tsh"><div>31</div></td>
+<td style="color:#a1a1a1">11</td>
+<td class="zjh"><div>33</div></td>
+</tr><tr id="rowId48"><td class="qh" width="84">2018<span style="display:none">.</span>006</td><td class="kjhm">02 07 08 09 17 29 <font color="#0066FF">11</font></td><td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>2</div></td>
+<td style="color:#a1a1a1">13</td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">8</td>
+<td class="zjh tsh"><div>7</div></td>
+<td class="zjh tsh"><div>8</div></td>
+<td class="zjh tsh"><div>9</div></td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">5</td>
+<td style="color:#a1a1a1">7</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">6</td>
+<td style="color:#a1a1a1">3</td>
+<td class="zjh"><div>17</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">20</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">4</td>
+<td style="color:#a1a1a1">8</td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">9</td>
+<td style="color:#a1a1a1">1</td>
+<td class="zjh"><div>29</div></td>
+<td style="color:#a1a1a1">2</td>
+<td style="color:#a1a1a1">1</td>
+<td style="color:#a1a1a1">12</td>
+<td style="color:#a1a1a1">1</td>
+</tr><tr id="rowId49"><td class="qh" width="84" style="border-bottom: 1px solid rgb(176, 176, 176);">2018<span style="display:none">.</span>007</td><td class="kjhm" style="border-bottom: 1px solid rgb(176, 176, 176);">13 14 20 25 27 31 <font color="#0066FF">12</font></td><td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">14</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">13</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">6</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">8</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>13</div></td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>14</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">7</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">4</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>20</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">21</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">9</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">5</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>25</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>27</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">1</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">3</td>
+<td class="zjh" style="border-bottom: 1px solid rgb(176, 176, 176);"><div>31</div></td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">13</td>
+<td style="color: rgb(161, 161, 161); border-bottom: 1px solid rgb(176, 176, 176);">2</td>
+</tr>
+    </tbody>
+    <tfoot>
+      <tr class="btou">
+        <td class="qh" width="84"><strong>期号</strong><img id="img2" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAARCAYAAADpPU2iAAABF0lEQVQokd2QvU7DQBCEjzaSC56LlpLSFba5n/jsC4kChJY38/pOVmwrBAnJjZt7iKFwbEIQSc9II+1pv9k9LWMn6vt+5pzjVVXxvu9np/0f8t4H1lpDRCiKAtZa470P/oSJaDPCZVmiKAoQ0eZXyHsflGUJIgIR4bg++DvUdd31OPmCh5Bzjh8Cb5dsrTVnj/BvZVZPSJRBLHPEMseDzJAIPb0TZZCoDLHUyFfPYFXdhjJdIBLpBMVSI+YpEpUhEgMstUFVtyFjjLGqrkOpDSKR4n6cLDQikSJRBjw9gkdt6xZiPnxt2KYRSw2ucrjtjk8gGLsa67p9D1W2mOB5tkTT7O7OHqHd728e1y9Yrl/RfHzenva/AFqzIL4LkbRiAAAAAElFTkSuQmCC" onclick="sort()"></td>
+        <td class="kjhm">
+        	<select style="border: none;" id="selectNumber2" name="" size="1" onclick="paixu()" onchange="dis1(),selectNumber.options[selectedIndex].selected=true,disOrEn2()">
+    			<option value="30" selected="selected">近30期开奖号码</option>
+   				<option value="50">近50期开奖号码</option>
+  			</select>
+        </td>
+        <td>01</td>
+        <td>02</td>
+        <td>03</td>
+        <td>04</td>
+        <td>05</td>
+        <td>06</td>
+        <td>07</td>
+        <td>08</td>
+        <td>09</td>
+        <td>10</td>
+        <td>11</td>
+        <td>12</td>
+        <td>13</td>
+        <td>14</td>
+        <td>15</td>
+        <td>16</td>
+        <td>17</td>
+        <td>18</td>
+        <td>19</td>
+        <td>20</td>
+        <td>21</td>
+        <td>22</td>
+        <td>23</td>
+        <td>24</td>
+        <td>25</td>
+        <td>26</td>
+        <td>27</td>
+        <td>28</td>
+        <td>29</td>
+        <td>30</td>
+        <td>31</td>
+        <td>32</td>
+        <td>33</td>
+      </tr>
+       <tr id="sanshi" class="f_666">
+<td colspan="2" class="bg_1 string">出现次数</td><td class="bg_3">6</td><td class="bg_3">6</td><td class="bg_3">4</td><td class="bg_3">3</td><td class="bg_3">6</td><td class="bg_3">7</td><td class="bg_3">9</td><td class="bg_3">4</td><td class="bg_3">5</td><td class="bg_3">3</td><td class="string bg_3">6</td><td class="bg_4">2</td><td class="bg_4">6</td><td class="bg_4">11</td><td class="bg_4">4</td><td class="bg_4">2</td><td class="bg_4">5</td><td class="bg_4">8</td><td class="bg_4">4</td><td class="bg_4">10</td><td class="bg_4">5</td><td class="string bg_4">1</td><td class="bg_5">5</td><td class="bg_5">4</td><td class="bg_5">6</td><td class="bg_5">7</td><td class="bg_5">4</td><td class="bg_5">8</td><td class="bg_5">6</td><td class="bg_5">4</td><td class="bg_5">9</td><td class="bg_5">5</td><td class="string bg_5">5</td></tr>
+<tr id="wushi" class="f_666" style="display: none;">
+<td colspan="2" class="bg_1 string">出现次数</td><td class="bg_3">10</td><td class="bg_3">10</td><td class="bg_3">5</td><td class="bg_3">6</td><td class="bg_3">9</td><td class="bg_3">13</td><td class="bg_3">10</td><td class="bg_3">7</td><td class="bg_3">8</td><td class="bg_3">7</td><td class="string bg_3">13</td><td class="bg_4">3</td><td class="bg_4">9</td><td class="bg_4">18</td><td class="bg_4">8</td><td class="bg_4">6</td><td class="bg_4">6</td><td class="bg_4">10</td><td class="bg_4">6</td><td class="bg_4">12</td><td class="bg_4">12</td><td class="string bg_4">7</td><td class="bg_5">9</td><td class="bg_5">7</td><td class="bg_5">10</td><td class="bg_5">11</td><td class="bg_5">9</td><td class="bg_5">10</td><td class="bg_5">10</td><td class="bg_5">9</td><td class="bg_5">14</td><td class="bg_5">8</td><td class="string bg_5">8</td></tr>
+<tr id="zuidasan" class="f_666">
+<td colspan="2" class="bg_1 string">最大遗漏</td><td class="bg_3">8</td><td class="bg_3">7</td><td class="bg_3">14</td><td class="bg_3">13</td><td class="bg_3">11</td><td class="bg_3">9</td><td class="bg_3">5</td><td class="bg_3">21</td><td class="bg_3">10</td><td class="bg_3">14</td><td class="string bg_3">6</td><td class="bg_4">30</td><td class="bg_4">10</td><td class="bg_4">6</td><td class="bg_4">7</td><td class="bg_4">17</td><td class="bg_4">11</td><td class="bg_4">11</td><td class="bg_4">24</td><td class="bg_4">14</td><td class="bg_4">8</td><td class="string bg_4">21</td><td class="bg_5">9</td><td class="bg_5">16</td><td class="bg_5">9</td><td class="bg_5">8</td><td class="bg_5">14</td><td class="bg_5">9</td><td class="bg_5">11</td><td class="bg_5">8</td><td class="bg_5">7</td><td class="bg_5">13</td><td class="string bg_5">9</td></tr>
+<tr id="zuidawu" class="f_666" style="display: none;">
+<td colspan="2" class="bg_1 string">最大遗漏</td><td class="bg_3">8</td><td class="bg_3">16</td><td class="bg_3">19</td><td class="bg_3">13</td><td class="bg_3">11</td><td class="bg_3">9</td><td class="bg_3">22</td><td class="bg_3">21</td><td class="bg_3">10</td><td class="bg_3">14</td><td class="string bg_3">13</td><td class="bg_4">30</td><td class="bg_4">19</td><td class="bg_4">7</td><td class="bg_4">7</td><td class="bg_4">17</td><td class="bg_4">14</td><td class="bg_4">11</td><td class="bg_4">24</td><td class="bg_4">14</td><td class="bg_4">8</td><td class="string bg_4">21</td><td class="bg_5">9</td><td class="bg_5">20</td><td class="bg_5">9</td><td class="bg_5">8</td><td class="bg_5">14</td><td class="bg_5">18</td><td class="bg_5">11</td><td class="bg_5">8</td><td class="bg_5">8</td><td class="bg_5">13</td><td class="string bg_5">10</td></tr>
+<tr id="pingjunsan" class="f_666">
+<td colspan="2" class="bg_1 string">平均遗漏</td><td class="bg_3">4</td><td class="bg_3">4</td><td class="bg_3">6</td><td class="bg_3">7</td><td class="bg_3">4</td><td class="bg_3">3</td><td class="bg_3">3</td><td class="bg_3">6</td><td class="bg_3">5</td><td class="bg_3">7</td><td class="string bg_3">4</td><td class="bg_4">10</td><td class="bg_4">4</td><td class="bg_4">2</td><td class="bg_4">6</td><td class="bg_4">10</td><td class="bg_4">5</td><td class="bg_4">3</td><td class="bg_4">6</td><td class="bg_4">2</td><td class="bg_4">5</td><td class="string bg_4">15</td><td class="bg_5">5</td><td class="bg_5">6</td><td class="bg_5">4</td><td class="bg_5">3</td><td class="bg_5">6</td><td class="bg_5">3</td><td class="bg_5">4</td><td class="bg_5">6</td><td class="bg_5">3</td><td class="bg_5">5</td><td class="string bg_5">5</td></tr>
+<tr id="pingjunwu" class="f_666" style="display: none;">
+<td colspan="2" class="bg_1 string">平均遗漏</td><td class="bg_3">4</td><td class="bg_3">4</td><td class="bg_3">8</td><td class="bg_3">7</td><td class="bg_3">5</td><td class="bg_3">3</td><td class="bg_3">4</td><td class="bg_3">6</td><td class="bg_3">5</td><td class="bg_3">6</td><td class="string bg_3">3</td><td class="bg_4">12</td><td class="bg_4">5</td><td class="bg_4">2</td><td class="bg_4">5</td><td class="bg_4">7</td><td class="bg_4">7</td><td class="bg_4">4</td><td class="bg_4">7</td><td class="bg_4">3</td><td class="bg_4">3</td><td class="string bg_4">6</td><td class="bg_5">5</td><td class="bg_5">6</td><td class="bg_5">4</td><td class="bg_5">4</td><td class="bg_5">5</td><td class="bg_5">4</td><td class="bg_5">4</td><td class="bg_5">5</td><td class="bg_5">3</td><td class="bg_5">5</td><td class="string bg_5">5</td></tr>
+<tr id="lianchusan" class="f_666">
+<td colspan="2" class="bg_1 string">最大连出</td><td class="bg_3">1</td><td class="bg_3">2</td><td class="bg_3">1</td><td class="bg_3">1</td><td class="bg_3">1</td><td class="bg_3">1</td><td class="bg_3">2</td><td class="bg_3">1</td><td class="bg_3">1</td><td class="bg_3">2</td><td class="string bg_3">1</td><td class="bg_4">1</td><td class="bg_4">2</td><td class="bg_4">3</td><td class="bg_4">1</td><td class="bg_4">1</td><td class="bg_4">1</td><td class="bg_4">2</td><td class="bg_4">1</td><td class="bg_4">2</td><td class="bg_4">1</td><td class="string bg_4">1</td><td class="bg_5">1</td><td class="bg_5">2</td><td class="bg_5">3</td><td class="bg_5">2</td><td class="bg_5">1</td><td class="bg_5">3</td><td class="bg_5">1</td><td class="bg_5">1</td><td class="bg_5">5</td><td class="bg_5">2</td><td class="string bg_5">1</td></tr><tr id="lianchuwu" class="f_666" style="display: none;">
+<td colspan="2" class="bg_1 string">最大连出</td><td class="bg_3">2</td><td class="bg_3">2</td><td class="bg_3">1</td><td class="bg_3">1</td><td class="bg_3">2</td><td class="bg_3">2</td><td class="bg_3">2</td><td class="bg_3">2</td><td class="bg_3">2</td><td class="bg_3">2</td><td class="string bg_3">4</td><td class="bg_4">1</td><td class="bg_4">2</td><td class="bg_4">3</td><td class="bg_4">1</td><td class="bg_4">2</td><td class="bg_4">1</td><td class="bg_4">2</td><td class="bg_4">2</td><td class="bg_4">2</td><td class="bg_4">2</td><td class="string bg_4">2</td><td class="bg_5">1</td><td class="bg_5">2</td><td class="bg_5">3</td><td class="bg_5">2</td><td class="bg_5">2</td><td class="bg_5">3</td><td class="bg_5">2</td><td class="bg_5">2</td><td class="bg_5">5</td><td class="bg_5">2</td><td class="string bg_5">1</td></tr><input type="hidden" id="num" value="100"><input type="hidden" id="asc" value="0">
+    </tfoot>
+  </table>
+
+
+
+
+<audio controls="controls" style="display: none;"></audio></body><style type="text/css">#yddContainer{display:block;font-family:Microsoft YaHei;position:relative;width:100%;height:100%;top:-4px;left:-4px;font-size:12px;border:1px solid}#yddTop{display:block;height:22px}#yddTopBorderlr{display:block;position:static;height:17px;padding:2px 28px;line-height:17px;font-size:12px;color:#5079bb;font-weight:bold;border-style:none solid;border-width:1px}#yddTopBorderlr .ydd-sp{position:absolute;top:2px;height:0;overflow:hidden}.ydd-icon{left:5px;width:17px;padding:0px 0px 0px 0px;padding-top:17px;background-position:-16px -44px}.ydd-close{right:5px;width:16px;padding-top:16px;background-position:left -44px}#yddKeyTitle{float:left;text-decoration:none}#yddMiddle{display:block;margin-bottom:10px}.ydd-tabs{display:block;margin:5px 0;padding:0 5px;height:18px;border-bottom:1px solid}.ydd-tab{display:block;float:left;height:18px;margin:0 5px -1px 0;padding:0 4px;line-height:18px;border:1px solid;border-bottom:none}.ydd-trans-container{display:block;line-height:160%}.ydd-trans-container a{text-decoration:none;}#yddBottom{position:absolute;bottom:0;left:0;width:100%;height:22px;line-height:22px;overflow:hidden;background-position:left -22px}.ydd-padding010{padding:0 10px}#yddWrapper{color:#252525;z-index:10001;background:url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ab20.png);}#yddContainer{background:#fff;border-color:#4b7598}#yddTopBorderlr{border-color:#f0f8fc}#yddWrapper .ydd-sp{background-image:url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ydd-sprite.png)}#yddWrapper a,#yddWrapper a:hover,#yddWrapper a:visited{color:#50799b}#yddWrapper .ydd-tabs{color:#959595}.ydd-tabs,.ydd-tab{background:#fff;border-color:#d5e7f3}#yddBottom{color:#363636}#yddWrapper{min-width:250px;max-width:400px;}</style></html>

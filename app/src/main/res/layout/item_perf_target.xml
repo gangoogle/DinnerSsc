@@ -32,7 +32,7 @@
             android:textSize="12sp"/>
     </LinearLayout>
 
-    <com.butter.yapple.ui.customview.LinePercentView
+    <com.butter.yapplet.ui.customview.LinePercentView
         android:id="@+id/lp_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

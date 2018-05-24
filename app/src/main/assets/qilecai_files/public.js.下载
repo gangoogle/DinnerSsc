@@ -1,0 +1,1467 @@
+var	html5src = sessionStorage.getItem("src");
+var style='width:65%;background: #000;opacity: 0.75;color:#fff;text-align:center;';
+var tipsShowTime = 2;
+var tipsStyle = "width:85%; text-align:center; ";
+if(html5src==null || html5src == ""){
+	html5src = "0000100001|6000003060";
+}
+var ua = (function() {
+	var clientUserAgent = navigator.userAgent.toLowerCase();
+	if (clientUserAgent.match(/MicroMessenger/i) == 'micromessenger') {
+		return "micromessenger";
+	}
+	if (clientUserAgent.indexOf('android') != -1) {
+		return "android";
+	}
+	if (/iPhone|iPad|iPod/i.test(clientUserAgent)) {
+		return "ios";
+	}
+	return "windows";
+})();
+if(ua == "windows"){
+	//重写touch
+	(function($){$.fn.tap=function(arg){$(this).click(arg);};
+	$.fn.onTem=$.fn.on;$.fn.on=function(event,callback){event=event=="tap"?"click":event;return $(this).onTem(event,callback);};
+	$.fn.bindTem=$.fn.bind;$.fn.bind=function(event,callback){event=event=="tap"?"click":event;return $(this).bindTem(event,callback);};
+	$.fn.offTem=$.fn.off;$.fn.off=function(event,callback){event=event=="tap"?"click":event;return $(this).offTem(event,callback);};
+	$.fn.unbindTem=$.fn.unbind;$.fn.unbind=function(event,callback){event=event=="tap"?"click":event;return $(this).unbindTem(event,callback);};
+	this.log=console.log||window.alert;this.tos=function(o){if(o.toSource){o.toSource();}else{alert(o);}};})($);
+	window.alertln = window.alert;
+}
+$(function(){
+	$(".navi_btn_on").click(function(){
+		if($(this).hasClass("on")) {
+			$(this).removeClass("on");
+			$(".nav").hide();
+		} else {
+			$(this).addClass("on");
+			$(".nav").show();
+		}
+	});
+	$("#logout").click(function(){
+		sessionStorage.removeItem("jsessionid");
+		sessionStorage.removeItem("userId");
+		sessionStorage.removeItem("tUserId");
+		sessionStorage.removeItem("accountName");
+		var url="/clienth5.do";
+		var postData = {transactionType:"300600",src:html5src};
+		$.ajax({
+			url:url,
+			data:postData,
+			dataType: "json",
+			success:function(dataObj){
+				console.log(dataObj);
+				window.location.href="/index.jsp";
+			}
+		});
+	});
+	$("header .sy").click(function(){//
+		var rel = "";
+		if($(this).attr("rel")) {
+			rel = $(this).attr("rel");
+		}
+		if(rel != "nothing") {
+			var forward = document.referrer;
+			if(forward.indexOf("register.jsp") > 0 || forward.indexOf("login.jsp") > 0 || forward == "" || rel == "home") { //注册登录
+				window.location.href = "/index.jsp;jsessionid="+getSessionId();
+				return false;
+			}
+			if(rel != "" && forward.indexOf(rel) < 0) {
+				window.location.href = rel+";jsessionid="+getSessionId();
+				return false;
+			} else {
+				window.history.go(-1);
+			}
+		}
+	});
+	$(".beforeGo").click(function(){//去前一步的方法处理返回数据不更新的情况realName
+		var forward = document.referrer;
+		if(forward.indexOf("register.jsp") > 0 || forward.indexOf("login.jsp") > 0 || forward.indexOf("realName.jsp") > 0 || forward.indexOf("wdzfu.jsp") > 0 || forward.indexOf("yeepay.jsp") > 0 || forward.indexOf("tjdz.jsp") > 0 || forward.indexOf("lqxq.jsp") > 0 || forward.indexOf("lplq.jsp") > 0 || forward == "" ) { //注册登录
+			window.location.href = "index.jsp";
+			return false;
+		}/*else if(forward.indexOf("zxjx.jsp") > 0){
+				window.location.href = "zxjx.jsp";//刷新动作
+		}*/else if(forward.indexOf("lpxq.jsp") > 0 && forward.indexOf("cycg") > 0){
+				window.location.href = "index.jsp";//刷新动作
+		}else{
+			window.history.go(-1);//浏览器可能缓存
+		}	
+	});
+	//下拉主菜单
+	$("#mainNavBtn").unbind("click").bind("click",function(){
+		if(typeof middle_nav_show == "function") {
+			middle_nav_show("hidden");
+		}
+		if(typeof random_select_style == "function") {
+			random_select_style("hidden");
+		}
+		if($("#mainNav").hasClass('dhzhan')){
+			nav_show("hidden");
+		}else{
+			nav_show("show");
+		}
+	});
+	$("#mainNavH").click(function(){
+		nav_show("hidden");
+	});
+	init_retina();
+	showScroll();
+	var queryString = request_url();
+	if(queryString["from"] == "client") {
+		$("#header").remove();
+		$("#mainNav").remove();
+		$("footer").remove();
+	} else {
+		$("#header").show();
+		$("#mainNav").show();
+		$("footer").show();
+	}
+});
+//显示竞彩sp
+//param:sp 3_3.02
+function jc_parse_sp(spInfo,playCode){
+	var spArr = [];
+	if(spInfo != ""){
+		var splitSp = spInfo.split("_");
+		switch(playCode){
+			case "311":
+			playCode = "301";
+			break;
+			case "312":
+			playCode = "302";
+			break;
+			case "313":
+			playCode = "303";
+			break;
+			case "314":
+			playCode = "304";
+			break;
+			case "316":
+			playCode = "306";
+			break;
+		}
+		spArr.push(jc_parse_bet_code(splitSp[0],playCode));
+		spArr.push(splitSp[1]);
+		spArr.push(splitSp[0]);
+	}
+	return spArr;
+}
+function jc_parse_bet_code(betCode,playCode){
+	var betCodeCN = "";
+	switch(playCode){
+		case "311":
+		playCode = "301";
+		break;
+		case "312":
+		playCode = "302";
+		break;
+		case "313":
+		playCode = "303";
+		break;
+		case "314":
+		playCode = "304";
+		break;
+		case "316":
+		playCode = "306";
+		break;
+	}
+	var betCodeMap = {
+		"301":{"3":"\u80dc","1":"\u5e73","0":"\u8d1f"},
+		"302":{"90":"\u80dc\u5176\u4ed6",'10':'1:0','20':'2:0','21':'2:1','30':'3:0','31':'3:1','32':'3:2','40':'4:0','41':'4:1','42':'4:2','50':'5:0','51':'5:1','52':'5:2',
+			"99":"\u5e73\u5176\u4ed6",'00':'0:0','11':'1:1','22':'2:2','33':'3:3',
+			"09":"\u8d1f\u5176\u4ed6",'01':'0:1','02':'0:2','12':'1:2','03':'0:3','13':'1:3','23':'2:3','04':'0:4','14':'1:4','24':'2:4','05':'0:5','15':'1:5','25':'2:5'},
+		"303":{'0':'0','1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7+'},
+		"304":{"33":"\u80dc\u80dc","31":"\u80dc\u5e73","30":"\u80dc\u8d1f",
+			"13":"\u5e73\u80dc","11":"\u5e73\u5e73","10":"\u5e73\u8d1f",
+			"03":"\u8d1f\u80dc","01":"\u8d1f\u5e73","00":"\u8d1f\u8d1f"},
+		"305":["301","306","302","304","303"],//混合
+		"306":{"3":"\u80dc","1":"\u5e73","0":"\u8d1f"},
+		"307":["301","306"],
+	};
+	if(betCode !== ''){
+		betCodeCN = betCodeMap[playCode][betCode];
+		if(betCodeCN == undefined) {
+			if(playCode == "302") {
+				if(betCode.substr(0,1) == betCode.substr(1,1)) {
+					betCodeCN = "\u5e73\u5176\u4ed6";
+				} else if(betCode.substr(0,1) > betCode.substr(1,1)) {
+					betCodeCN = "\u80dc\u5176\u4ed6";
+				} else {
+					betCodeCN = "\u8d1f\u5176\u4ed6";
+				}
+			}
+		}
+	} else {
+		betCodeCN = betCodeMap[playCode];
+	}
+	return betCodeCN;
+}
+function play_code_name(lottery,playCode){
+	var playNameArr = {
+		"FC_SSQ":{
+			'SSQ_DS':'双色球单式','SSQ_FS':'双色球复式','SSQ_DT':'双色球胆拖'
+		},
+		"FC_3D":{
+			'D3_ZXDS':'福彩3D直选单式','D3_ZXFS':'福彩3D直选复式','D3_ZXHZ':'福彩3D直选和值','D3_ZUX3DS':'福彩3D组三单式','D3_ZUX3FS':'福彩3D组三复式',
+			'D3_ZUX3HZ':'福彩3D组三和值','D3_ZUX6DS':'福彩3D组六单式','D3_ZUX6FS':'福彩3D组六复式','D3_ZUX6HZ':'福彩3D组六和值'
+		}
+	};
+	return (lottery != "" && playCode != "" && playNameArr[lottery][playCode] != undefined)?playNameArr[lottery][playCode]:"";
+}
+function play_code_name1(lottery,playCode){
+	var playNameArr = {
+			"FC_SSQ":{
+				'40010001':'双色球单式','40010002':'双色球复式','40010003':'双色球胆拖'
+			},
+			"FC_3D":{
+				'40020101':'福彩3D直选单式','40020102':'福彩3D直选复式','40020201':'福彩3D组三单式','40020202':'福彩3D组三复式','40020301':'福彩3D组六单式','40020302':'福彩3D组六复式'
+			}
+		};
+		return (lottery != "" && playCode != "" && playNameArr[lottery][playCode] != undefined)?playNameArr[lottery][playCode]:"";
+	}
+function play_code_bet_no(lottery,playCode){
+	var betNoArr = {
+		"FC_SSQ":{
+			'SSQ_DS':'40010001','SSQ_FS':'40010002','SSQ_DT':'40010003'
+		},
+		"FC_3D":{
+			'D3_ZXDS':'40020101','D3_ZXFS':'40020102','D3_ZUX3DS':'40020201','D3_ZUX3FS':'40020202',
+			'D3_ZUX6DS':'40020301','D3_ZUX6FS':'40020302'
+		}
+	};
+	return (lottery != "" && playCode != "" && betNoArr[lottery][playCode] != undefined)?betNoArr[lottery][playCode]:"";
+}
+function lottery_info(lottery,index){
+	var lotteryInfo;
+	var lotteryInfoArr = {
+	  	"TC_CJDLR":["cjdlt","大乐透","/cjdlr/index.jsp","千万大奖在等你"],
+	  	"FC_SSQ":["ssq","双色球","/ssq/index.jsp","中奖福地"],
+	  	"FC_NMK3":["nmks","快三","/nmks/chooseBall.jsp","赚钱就10分钟"],
+	  	"FC_JLK3":["jlks","新快三","/jlks/chooseBall.jsp","好玩，易中奖"],
+	  	"TC_JX11X5":["11x5","11选5","/11x5/chooseBall.jsp","十分钟一期"],
+	  	"FC_3D":["3d","福彩3D","/3d/index.jsp","每天都开奖"],
+	  	"TC_PL3":["pl3","排列3","/pl3/chooseBall.jsp","每天都开奖"],
+	  	"TC_11X5":["syy","十一运","/syy/chooseBall.jsp","十分钟一期"],
+	  	"FC_KLSF":["klsf","快乐十分","/klsf/chooseBall.jsp","天天赚钱到凌晨"],
+	  	"FC_SSC":["xssc","新时时彩","/xssc/chooseBall.jsp","玩法简单！"],
+	  	"TC_KLPK3":["klpk","快乐扑克","/klpk/chooseBall.jsp","简单易中奖"],
+	  	"JC_ZQ":["jczq","竞彩足球","/jczq/index.jsp","返奖率高达69％"],
+	  	"FC_QLC":["qlc","七乐彩","/qlc/index.jsp","30选7轻松赢百万"]
+		};
+	if(lottery == "ALL"){
+		lotteryInfo = lotteryInfoArr;
+	} else {
+		if(index != "") {
+			lotteryInfo = lotteryInfoArr[lottery][index] != undefined?lotteryInfoArr[lottery][index]:"";
+		} else {
+			lotteryInfo = lotteryInfoArr[lottery] != undefined?lotteryInfoArr[lottery]:[];
+		}
+	}
+	return lotteryInfo;
+}
+$.format_money = function($cell) {  
+	var reg = /[\$,%]/g;  
+	var key = parseFloat( String($cell).replace(reg, '')).toFixed(2); // toFixed小数点后两位  
+	return isNaN(key) ? 0.00 : key;  
+};
+$.int = function(number) {
+	return parseInt(number, 10);
+};
+$.float = function(float) {
+	return parseFloat(float, 10);
+};
+$._unique = function(array) {
+	var uniqueArr = new Array();
+	if($.isArray(array) && array.length > 0) {
+		for(var n=0;n<array.length;n++) {
+			if($.inArray(array[n], uniqueArr) == -1) {
+				uniqueArr.push(array[n]);
+			}
+		}
+	}
+	return uniqueArr;
+};
+$.inArray = function(value, array){
+	var inOf = false;
+	if(array && array.length && typeof(array) == "object") {
+		for(var i=0; i<array.length; i++){
+			if(value == array[i]){
+				inOf = true;
+			}
+		}
+	}
+	return inOf;
+};
+String.prototype.repeat = function(n){
+    return new Array(n + 1).join(this);
+};
+$.delArray = function(value, array){
+	
+};
+$.now = function(){//当前时间
+	var d = new Date();
+	var vYear = d.getFullYear();
+	var vMon = d.getMonth() + 1;
+	var vDay = d.getDate();
+	var h = d.getHours(); 
+	var m = d.getMinutes(); 
+	var se = d.getSeconds(); 
+	return vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(se<10 ? "0" +se : se);
+};
+$.merge = function( first, second ) {
+	var i = first.length, j = 0;
+	if ( typeof second.length === "number" ) {
+		for ( var l = second.length; j < l; j++ ) {
+			first[ i++ ] = second[ j ];
+		}
+	} else {
+		while ( second[j] !== undefined ) {
+			first[ i++ ] = second[ j++ ];
+		}
+	}
+	first.length = i;
+	return first;
+};
+function get_issue_open(lotteryNo, period, page, rowcount){ //获取最新一期开奖号
+	var openInfo = {};
+	if(lotteryNo !== "") {
+		 var url="/clienth5.do";
+		 var thePage = (page !== '')?page:1;
+		 var theRowcount = (rowcount !== '')?rowcount:1;
+		 var postData = {busiCode:"304016",period:period,lotteryNo:lotteryNo,page:thePage,rowcount:theRowcount,src:html5src};
+		 $.ajax({
+			 url:url,
+			 data:postData,
+			 dataType: "json",
+			 async:false,
+			 success:function(dataObj){
+				 if(dataObj !== "" && dataObj.list !== undefined && dataObj.list.length > 0) {
+					 openInfo = dataObj.list[0];
+				 }
+			 }
+		 });
+	}
+    return openInfo;
+}
+//生成随机号码
+function random_num(startNum, endNum, numLen){
+	var len = (numLen !== '' && numLen > 0)?numLen:2;
+	var randomNum = $.int(Math.random()*($.int(endNum)-$.int(startNum)+1)+$.int(startNum));
+	if(randomNum.toString().length < len) {
+		randomNum = ("0").repeat(len-randomNum.toString().length)+''+randomNum;
+	}
+	return randomNum;
+}
+function random_bet_code(nums, lottery){
+	var numArr = [];
+	if(lottery !== ""){
+		var randomMap = {"FC_SSQ":{"red":[1,33],"blue":[1,16]}};
+		switch(lottery) {
+			case "FC_SSQ":
+			while(numArr.length < 6){
+				var tempNums1 = random_num(randomMap[lottery]["red"][0],randomMap[lottery]["red"][1],2);
+				if(!$.inArray(tempNums1,numArr)){
+					numArr.push(tempNums1);
+				}
+			}
+			numArr.sort();
+			var tempNums2 = random_num(randomMap[lottery]["blue"][0],randomMap[lottery]["blue"][1],2);
+			numArr.push(tempNums2);
+			break;
+		}
+	}
+	
+	return numArr;
+}
+function get_issue_info(lotteryNo){ //获取最新一期开奖号
+	var issueInfo = {};
+	if(lotteryNo !== "") {
+		 var url="/clienth5.do";
+		 var postData = {transactionType:"1054",lottery:lotteryNo,src:html5src};
+		 $.ajax({
+			 url:url,
+			 data:postData,
+			 dataType: "json",
+			 async:false,
+			 success:function(dataObj){
+				 if(dataObj !== "" && dataObj.lotteryList !== undefined && dataObj.lotteryList.length > 0) {
+					 issueInfo = dataObj.lotteryList[0];
+				 }
+			 }
+		 });
+	}
+    return issueInfo;
+}
+function ajax_login(){
+	var forward = arguments[0]?arguments[0]:''; //跳转页面
+	var from = arguments[1]?arguments[1]:''; //用户来源
+	var callBack = arguments[2]?arguments[2]:''; //用户来源
+	var u_name = storage_get_item("accountName");
+	var loginDiv = '<div class="dlbd dlbd2"><ul>'
+ 		+'<li class="yhm"><img src="/static/images/dlu2.png"><label><strong>账户</strong><input type="text" placeholder="请输入手机号/用户名" id="accountName" value="'+u_name+'"></label><span class="qch"></span><div class="cleardiv"></div></li>'
+ 		+'<li class="mma"><img src="/static/images/user_passwordlevel.png"><label><strong>密码</strong><input type="password" placeholder="请输入密码" id="password"><input type="text" id="pwdtxt" placeholder="密码" style="display:none;"></label><div class="yjing" id="show_pwd"></div><span class="qch"></span><div class="cleardiv"></div></li></ul>';
+ 		if(from != "ZCS") {
+ 			loginDiv+=' <label class="zdeng"><input id="remPwd" type="checkbox" checked><strong>记住帐号</strong></label><a class="wmi" href="javascript://" id="retrievePassword">忘记密码?</a><div class="cleardiv"></div><div class="m015"><input id="loginButton" type="button" class="tjan" value="登录">';
+ 		}
+ 		if(forward == "register") {
+ 			loginDiv += "<li class='loginLi'><input class='btn_gray' id='doAjaxReg' type='button' value='注册'></li>";
+ 		}
+ 		loginDiv +='</div>';
+	var login = layer.open({
+	    type: 1, //1代表页面层
+	    title:["登录"+((ua=="micromessenger" && from == "ZCS")?"中彩手":"")],
+	    content: loginDiv,
+	    shadeClose:0,
+	    success: function(olayer){
+	    	var ww = $(window).width();
+			$(".dlbd li label").width(ww*0.9-80);
+	    	$(".qch").click(function(){
+	    		$(this).parent().find('input').val('');
+			});
+			$("#show_pwd").click(function(){
+				$(this).toggleClass('on0');
+				if($(this).hasClass('on0')){
+					$("#password").hide();
+					$("#pwdtxt").show();
+					$("#pwdtxt").val($("#password").val());
+				}else{
+					$("#password").show();
+					$("#pwdtxt").hide();
+					$("#password").val($("#pwdtxt").val());
+				}
+			});
+	    	$("#doRegister").click(function(){
+		    	window.location.href="/ucenter/register.jsp;jsessionid="+getSessionId();
+		    });
+		    $("#retrievePassword").click(function(){
+		    	window.location.href="/ucenter/findPwd.jsp;jsessionid="+getSessionId();
+		    });
+		    $("#doAjaxReg").click(function(){
+		    	layer.close(login);
+		    	ajax_register(forward,from,callBack);
+		    });
+		    $("#loginButton").click(function(){
+				var accountName = $("#accountName").val();
+				var password = $("#password").val();
+				if (accountName==""){
+					layer.open({
+					    content: '请填写用户名！',
+					    time:tipsShowTime
+					});
+					return false;
+				 }
+				if(password==""){
+					password = $("#pwdtxt").val();
+				}
+				 if(password==null || password==""){
+					 layer.open({
+						 content: '您的密码不能为空，请输入密码！',
+						 time:tipsShowTime
+					 });
+					 return false;
+				 }
+				 if(password.length<6 || password.length>15){
+					 layer.open({
+						 content: '密码长度错误，请确保长度在6-15的范围内！',
+						 time:tipsShowTime
+					 });
+					 return false;
+				 }
+				 var url="/clienth5.do";
+				 var postData = {transactionType:"300602",accountName:encodeURI(accountName),password:password,src:html5src};
+				 $.ajax({
+				  	url:url,
+				  	data:postData,
+				 	dataType: "json",
+				  	success:function(dataObj){
+				  		if(dataObj !== "" && dataObj.resCode == "000000") {
+				  			console.log(dataObj);
+				  			setSessionId();
+				  			sessionStorage.setItem("userId",dataObj.userId);
+				  			sessionStorage.setItem("tUserId",dataObj.tUserId);
+							sessionStorage.setItem("accountName",dataObj.userName);   //手机号
+							if($("#remPwd").attr("checked")){
+								storage_set_item('accountName',dataObj.userName);
+							}else{
+								storage_remove_item('accountName');
+							}
+							if($("#unLogin")){
+								$(".user_name a").html(dataObj.userName);
+								$(".user_account").find("span:nth-child(1)").html(dataObj.betAcnt);
+								$(".user_account").find("span:nth-child(2)").html(dataObj.prizeAcnt);
+								$("#unLogin").hide();
+								$("#loginInfo").show();
+							}
+							if(callBack == ""){
+								if(forward == ""){
+									layer.close(login);
+								} else if(forward == "reload"){
+									location.reload();
+								} else{
+									window.location.href=forward+";jsessionid="+getSessionId();
+								}
+							} else {
+								layer.close(login);
+								eval("(" +callBack+")");
+							}
+				  		} else {
+				  			layer.open({
+								content: '用户名或密码错误！',
+								time:tipsShowTime
+							});
+				  		}
+				  	}
+				});
+			});
+	    }
+	});
+}
+function get_head_img(name){//获取头像
+	var url = "/clienth5.do;jsessionid="+getSessionId();
+	var param = {};
+    param.userName = encodeURI(name);
+    param.transactionType = "300611";
+    param.src = html5src;
+    var imgUrl = "";
+    $.ajax({
+		url:url,
+		data:param,
+		dataType: "json",
+		async:false,
+		success:function(dataObj){
+			if(dataObj.resCode=='0000'){
+				if(dataObj.url!=''){
+					imgUrl=dataObj.url;
+				}else{
+					imgUrl='/static/images/top_img.png';
+				}
+			}
+		}
+    });
+    return imgUrl;
+}
+function ajax_register(){
+	var forward = arguments[0]?arguments[0]:''; //跳转页面
+	var from = arguments[1]?arguments[1]:''; //用户来源
+	var callBack = arguments[2]?arguments[2]:''; //用户来源
+	var regDiv = "<ul class='login'>"
+ 		+"<li class='inputLi'><input type='text' placeholder='请输入手机号/用户名' id='telephone'></li>"
+ 		+"<li class='inputLi'><input type='password' placeholder='请输入密码' id='password'></li>"
+ 		+"<li class='inputLi'><input type='password' placeholder='请再次输入密码' id='passwordC'></li>"
+ 		+"<li class='loginLi'><input type='button' class='btn_orange' value='注册' id='regButton'></li>";
+		if(forward == "register") {
+			regDiv += "<li class='loginLi'><input class='btn_gray' id='doAjaxLogin' type='button' value='登录'></li>";
+		}
+ 		regDiv += "</ul>";
+	var reg = layer.open({
+		type: 1, //1代表页面层
+		title:["注册"+((ua=="micromessenger" && from == "ZCS")?"中彩手":"")],
+		content: regDiv,
+		shadeClose:0,
+		success: function(olayer){
+			$("#doAjaxLogin").click(function(){
+		    	layer.close(reg);
+		    	ajax_login(forward,from,callBack);
+		    });
+			$("#regButton").click(function(){
+				var telephone = $("#telephone").val();
+				var password = $("#password").val();
+				var passwordC = $("#passwordC").val();
+				if (telephone==""){
+					layer.open({
+						content: '请输入手机号！',
+						time:tipsShowTime
+					});
+					return false;
+				 }
+				 if(password==null || password==""){
+					 layer.open({
+						 content: '请输入密码！',
+						 time:tipsShowTime
+					 });
+					 return false;
+				 }
+				 if(password.length<6 || password.length>15){
+					 layer.open({
+						 content: '密码长度错误，请确保长度在6-15的范围内！',
+						 time:tipsShowTime
+					 });
+					 return false;
+				}
+				if(passwordC==null || passwordC==""){
+					 layer.open({
+						 content: '请输入确认密码！',
+						 time:tipsShowTime
+					 });
+					 return false;
+				}
+				if(password != passwordC){
+					 layer.open({
+						 content: '两次输入的密码不同！',
+						 time:tipsShowTime
+					 });
+					 return false;
+				 }
+				 var url="/clienth5.do;jsessionid="+getSessionId();
+				 var postData = {busiCode:"301001",mobile:telephone,password:password,src:html5src};
+				 $.ajax({
+					url:url,
+					data:postData,
+					dataType: "json",
+					success:function(dataObj){
+						if(dataObj !== "" && dataObj.resCode == "0000") {
+							setSessionId();
+							var url="/clienth5.do;jsessionid="+getSessionId();
+							var postData = {busiCode:"301002",mobile:encodeURI(telephone),password:password,src:html5src};
+							$.ajax({
+								url:url,
+								data:postData,
+								dataType: "json",
+								async:false,
+								success:function(dataObj){
+									sessionStorage.setItem("userId",dataObj.userId);   
+									sessionStorage.setItem("betAcnt",dataObj.betAcnt);   //投注金
+			 						sessionStorage.setItem("priceAcnt",dataObj.prizeAcnt);  // 奖金
+									sessionStorage.setItem("mobile",dataObj.mobile);   //手机号
+								}
+							});
+							if(callBack == ""){
+								if(forward == ""){
+									layer.close(reg);
+								} else if(forward == "reload"){
+									location.reload();
+								} else{
+									window.location.href=forward+";jsessionid="+getSessionId();
+								}
+							} else {
+								layer.close(reg);
+								eval("(" +callBack+")");
+							}
+						} else {
+							layer.open({
+								content: dataObj.message,
+								time:tipsShowTime
+							});
+						}
+					}
+				});
+			});
+		}
+	});
+}
+function check_login(forward){//检测登陆 forward return返回结果 login跳转
+	if(!sessionStorage.getItem("userId") || sessionStorage.getItem("userId")=="" || sessionStorage.getItem("userId")==undefined){
+		if(forward == "return"){
+			return false;
+		} else if(forward == "login") {
+			window.location.href="/ucenter/login.jsp";
+		}
+	} else {
+		return true;
+	}
+}
+function get_user_info(){
+	var userId = "";
+	var busiCode = arguments[0]?arguments[0]:"10020121";
+	if(sessionStorage.getItem("userId") != undefined && sessionStorage.getItem("userId") != "" && sessionStorage.getItem("userId") != "null") {
+		userId = sessionStorage.getItem("userId");
+	} else {
+		if(sessionStorage.getItem("tUserId") != undefined && sessionStorage.getItem("tUserId") != "" && sessionStorage.getItem("tUserId") != "null") {
+			userId = sessionStorage.getItem("tUserId");
+		}
+	}
+	var userInfo = "";
+	if(userId != "") {
+		var url="/clienth5.do";
+		var postData = {transactionType:"1004",userId:userId,busiCode:busiCode,src:html5src};
+		$.ajax({
+			url:url,
+			data:postData,
+			dataType: "json",
+			async:false,
+			success:function(dataObj){
+				if(dataObj !== "" && (dataObj.resCode == "000000" || (dataObj.resCode == "100400" && busiCode == "1004"))) {
+					userInfo = dataObj;
+				} else if(dataObj.resCode == "3002"){
+					sessionStorage.removeItem("jsessionid");
+					sessionStorage.removeItem("userId");
+					sessionStorage.removeItem("tUserId");
+			    	sessionStorage.removeItem("accountName");
+				}
+			}
+		});
+	}
+	return userInfo;
+}
+function combination(arr, num){
+    var r=[];
+    (function f(t,a,n){
+        if (n==0) return r.push(t);
+        for (var i=0,l=a.length; i<=l-n; i++){
+            f(t.concat(a[i]), a.slice(i+1), n-1);
+        }
+    })([],arr,num);
+    return r;
+}
+function combination_2w(doubleArrays){ //二维数组组合
+    var len=doubleArrays.length;
+    if(len>=2){
+        var len1=doubleArrays[0].length;
+        var len2=doubleArrays[1].length;
+        var newlen=len1*len2;
+        var temp=new Array(newlen);
+        var index=0;
+        for(var i=0;i<len1;i++){
+            for(var j=0;j<len2;j++){
+                temp[index]=doubleArrays[0][i]+","+
+                    doubleArrays[1][j];
+                index++;
+            }
+        }
+        var newArray=new Array(len-1);
+        for(var i=2;i<len;i++){
+            newArray[i-1]= doubleArrays[i];
+        }
+        newArray[0]=temp;
+        return combination_2w(newArray);
+    }else{
+        return doubleArrays[0];
+    }
+}
+function request_url() {
+    var url = window.location.href;
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.split("?");
+        strs = str[1].split("&");
+        for (var i = 0; i < strs.length; i++) {
+            if(i < strs.length-1){
+                theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+            }else{
+            	var s = decodeURI(strs[i].split("=")[1]);
+            	var ss = s.split("#");
+            	theRequest[strs[i].split("=")[0]] =ss[0];
+            }
+        }
+    }
+    return theRequest;
+}
+function del_queryString(url, ref){ //删除参数值
+    var str = "";
+    if (url.indexOf('?') != -1){
+    	str = url.substr(url.indexOf('?') + 1);
+    } else {
+    	return url;
+    } 
+    var arr = "";
+    var returnurl = "";
+    if (str.indexOf('&') != -1) {
+        arr = str.split('&');
+        for (i in arr) {
+            if (arr[i].split('=')[0] != ref) {
+                returnurl = returnurl + arr[i].split('=')[0] + "=" + arr[i].split('=')[1] + "&";
+            }
+        }
+        return url.substr(0, url.indexOf('?')) + "?" + returnurl.substr(0, returnurl.length - 1);
+    } else {
+        arr = str.split('=');
+        if (arr[0] == ref) {
+        	return url.substr(0, url.indexOf('?'));
+        } else {
+        	return url;
+        }  
+    }
+}
+function show_username(value) {
+	var showInfo = '';
+	if(value.userName !== undefined && value.userName !=='' && value.userName !== null) {
+		if(!isNaN(value.userName)){
+		 	showInfo = value.userName.substring(0,3)+ '*******'+ value.userName.substring(10,11);
+		} else if(value.userName.substring(0,4).toUpperCase() == '*ZCS'){
+			showInfo = value.userName.substring(4,7)+ '*******'+ value.userName.substring(14,15);
+		} else {
+			showInfo = value.userName;
+		}
+	} else if(value.accountName !== undefined && value.accountName !=='' && value.accountName !== null) {
+		if(!isNaN(value.accountName)){
+		 	showInfo = value.accountName.substring(0,3)+ '*******'+ value.accountName.substring(10,11);
+		} else if(value.accountName.substring(0,4).toUpperCase() == '*ZCS'){
+			showInfo = value.accountName.substring(4,7)+ '*******'+ value.accountName.substring(14,15);
+		} else {
+			showInfo = value.accountName;
+		}
+	} else if(value.cell !== undefined && value.cell !=='' &&value.cell !== null){
+			showInfo = value.cell.substring(0,3)+ '*******'+ value.cell.substring(10,11);
+	}
+	return showInfo;
+}
+function query_string(strName){
+	var strHref = document.location.href;
+	var intPos = strHref.indexOf("?");
+	var strRight = strHref.substr(intPos + 1);
+	var arrTmp = strRight.split("&");
+	for(var i = 0; i < arrTmp.length; i++ ) {
+		var arrTemp = arrTmp[i].split("=");
+		if(arrTemp[0].toUpperCase() == strName.toUpperCase()) return arrTemp[1];
+	}
+	return "";
+}
+function date_time(enDash) { //enDash连字符
+	var NowTime = new Date();
+	if(enDash == "") {
+		enDash = "-";
+	}
+	alert(NowTime);
+	return NowTime.getFullYear()+""+enDash+""+(NowTime.getMonth()+1)+""+enDash+""+NowTime.getDate()+" "+NowTime.getHours()+":"+NowTime.getMinutes()+":"+NowTime.getSeconds();
+}
+function format_nums(num,type){
+	n = num;
+	if(num/100000000 > 1){
+		n = (num/100000000).toFixed(1)+'亿';
+	}else if(num/10000>0 && num>10000000){
+		n = (num/10000).toFixed(0)+'万';
+	}
+	if(type != ''&& type == 1){
+		if(num/100000000 > 1){
+			n = (num/100000000).toFixed(2)+'亿';
+		}else if(num/10000>0 && num>10000000){
+			n = (num/10000000).toFixed(2)+'千万';
+		}else if(num/10000>0 && num>10000){
+			n = (num/10000).toFixed(2)+'万';
+		}
+	}
+	return n;
+}
+function show_order_status(status){//订单状态
+	var statusArr = {"0":'待出票',"1":'出票中',"2":'出票成功',"3":'出票部分成功',"4":'出票失败',"5":'已取消追号',"6":'中奖追停',"7":'追号失败'};
+	return (status != '' && statusArr[status] != undefined)? statusArr[status]:'';
+}
+function show_jc_rq(rq, playCode){
+	var div = arguments[2]?arguments[2]:''; //比分 胜平负标识 
+	var rqInfo = "";
+	if(rq != "") {
+		rqInfo = (playCode == "305" || playCode == "307" || playCode == "306")?"("+(rq>0?"+"+rq:rq)+")":"";
+		if(div != "") {
+			rqInfo = "<"+div+">"+rqInfo+"</"+div+">";
+		}
+	}
+	return rqInfo;
+}
+function get_fi_info(f){ //获取预测信息
+	var url="/clienth5.do";
+	var postData = {busiCode:"7001",f:f};
+	var content = "";
+	$.ajax({
+		url:url,
+		data:postData,
+		dataType:"html",
+		async:false,
+		success:function(data, status){
+			content = data.replace(/<script.*?script>/g,"");
+		}
+	});
+	return content;
+}
+function get_League_bg(leagueName){
+	var className = "scbg0";
+	var leagueIdArr = {"意甲":1,"西甲":2,"德甲":3,"英超":4,"法甲":5,"荷甲":6,"英足总杯":7,"英联赛杯":8,"欧冠杯":10,"欧联杯":11,"苏超":12,"苏联赛杯":13,"苏足总杯":14,"西国王杯":15,"德国杯":16,"德乙":17,"意大利杯":18,"英冠":21,"英甲":22,"法国杯":28,"西超级杯":29,"葡超":30,"西乙":31,"法联赛杯":32,"比甲":33,"瑞典超":34,"挪超":35,"荷兰杯":36,"芬超":37,"美职联":38,"比利时杯":39,"葡萄牙杯":41,"土伦杯":42,"法超杯":44,"比超杯":45,"荷超杯":46,"葡超杯":47,"阿甲春":48,"阿甲秋":49,"瑞士超":50,"丹超":51,"奥甲":52,"希腊超":53,"土超":54,"俄超":55,"巴甲":56,"巴甲":56,"爱超":57,"奥地利杯":58,"丹麦杯":59,"希腊杯":60,"俄罗斯杯":61,"俄超杯":62,"瑞士杯":63,"瑞典杯":64,"捷克甲":65,"匈牙甲":66,"波兰甲":67,"罗甲":68,"乌克兰超":73,"波兰杯":74,"奥乙":75,"德北联":77,"比乙":78,"塞浦甲":79,"瑞士甲":84,"葡甲":89,"匈牙利杯":91,"挪威杯":92,"保加杯":94,"保加超":95,"捷克杯":97,"冰岛超":98,"冰岛杯":99,"以超":100,"罗杯":103,"乌克兰杯":105,"世界杯":108,"国际A级":109,"荷乙":113,"塞浦杯":114,"日天皇杯":115,"日职联":138,"日联赛杯":153,"经典K联赛":154,"斯伐超":156,"斯文甲":157,"英乙":158,"墨联春":161,"墨联秋":162,"南俱杯":163,"克罗甲":164,"中超":213,"中足协杯":219,"麒麟杯":327,"亚冠杯":328,"欧超杯":332,"英社区盾":333,"解放者杯":336,"丹麦甲":440,"友谊赛":419,"巴西杯":434,"瑞典甲":435,"波兰乙":436,"挪甲":438,"爱甲":439,"芬兰甲":441,"白俄超":449,"乌超杯":460,"匈超杯":464,"南美超杯":468,"俄甲":469,"澳A联":470,"斯文杯":472,"英甲附":476,"阿甲附":478,"荷甲附":481,"比乙附":483,"英乙附":487,"爱足总杯":488,"意乙附":491,"芬联赛杯":497,"英冠附":500,"丹东联":509,"波甲附":510,"哥伦甲秋":514,"澳A附":525,"法丙":527,"J2联赛":533,"阿尔巴超":540,"希腊超附":543,"圣保罗锦":548,"里约锦":549,"英锦赛":552,"乌拉甲春":553,"波超杯":560,"罗超杯":561,"巴乙":564,"阿乙":567,"沙特职联":570,"马其甲":571,"韩K1附":573,"卡塔联":576,"摩尔甲":578,"巴拉甲春":579,"玻利甲秋":581,"厄瓜甲春":583,"委内超秋":586,"阿联酋甲":587,"智利甲":610,"哈萨克超":639,"阿塞超":641,"冰岛甲":653,"韩足总杯":668,"酋长杯":671,"美公开杯":687,"斯文超杯":689,"智利甲春":695,"葡联赛杯":698,"匈联赛杯":702,"塞浦超杯":704,"加拿大锦*":708,"墨联春附":719,"哥伦甲春":724,"欧U21预":1178,"厄瓜甲秋":1258,"委内超春":1560,"圣保锦附":1620,"乌拉甲秋":1720,"巴拉甲秋":1740,"塞浦甲附":2120,"德丙":2207,"哥伦杯":2220,"玻利甲春":2255,"中北冠联":2263,"智利杯":2309,"比甲附":2434,"德甲附":2474,"德乙附":2475,"以超附":2514,"国际冠军杯":2654,"冰联赛杯":3234,"格鲁超":3354,"捷超级杯":3672,"格鲁杯":3698,"马其杯":3740,"摩尔杯":3749,"摩尔超杯":3750,"阿塞杯":3894,"荷乙附":3974,"西乙附":4034,"阿根廷杯":4694,"格鲁超附":4774,"俄超附":4854,"德东北联":4974,"德巴伐联":4975,"墨秋杯":5034,"美钻石杯":5475,"芬兰甲":5594,"澳足总杯":6994,"保加超附":7074,"葡超附":7314};
+	if(leagueIdArr[leagueName] != undefined) {
+		className = "scbg"+leagueIdArr[leagueName];
+	}
+	return className;
+}
+function clear_session(){
+	sessionStorage.removeItem("jsessionid");
+	sessionStorage.removeItem("userId");
+	sessionStorage.removeItem("accountName");
+}
+function client_login(userInfoStr) {
+	if(userInfoStr != "") {
+		userInfoObj = eval("("+userInfoStr+")");
+		$.each(userInfoObj,function(k,v){
+			sessionStorage.setItem(k,v);
+		});
+	} else {
+		var queryString = request_url();
+		if(queryString["from"] == "client") {
+			//clear_session();
+		}
+	}
+}
+//随机获取号码处理 2014.12.25 fangzhen
+function random_code(maxNum,minNum){
+	 var data = new Array();  //选中了的球的集合
+	 var dataB = new Array();//根据球的数量生成相应的球【该球集合编号从1开始】
+	 var order = arguments[2]?arguments[2]:'1'; //是否排序 1 是 2否
+	 for(var i=0;i<maxNum;i++){
+		 dataB[i]=i+1;
+	 }
+	data = get_array(dataB,minNum); //获得选中的球的集合
+	if(order == 1) {
+		for(var m=0;m<data.length;m++){  //排序
+			for(var k =m+1;k<data.length;k++){
+				if(data[m]>data[k]){
+					var t = data[k];
+					data[k] = data[m];
+					data[m] = t;
+				}
+			}
+		}
+	}
+	
+	for(var m=0;m<data.length;m++){
+		if(data[m]<10){
+			data[m]="0"+data[m];
+		}
+	}//格式化选中球的集合
+	return data;
+}
+function random_code_s(maxNum,minNum){
+	 var data = new Array();  //选中了的球的集合
+	 var dataB = new Array();//根据球的数量生成相应的球【该球集合编号从1开始】
+	 var order = arguments[2]?arguments[2]:'1'; //是否排序 1 是 2否
+	 for(var i=0;i<=maxNum;i++){
+		 dataB[i]=i;
+	 }
+	data = get_array(dataB,minNum); //获得选中的球的集合
+	if(order == 1) {
+		for(var m=0;m<data.length;m++){  //排序
+			for(var k =m+1;k<data.length;k++){
+				if(data[m]>data[k]){
+					var t = data[k];
+					data[k] = data[m];
+					data[m] = t;
+				}
+			}
+		}
+	}
+	return data;
+}
+function get_array(arr, num) {
+   var return_array = new Array();
+   for (var i = 0; i<num; i++) {
+       if (arr.length>0) {
+           var arrIndex = Math.floor(Math.random()*arr.length);
+           return_array[i] = arr[arrIndex];
+           arr.splice(arrIndex, 1);
+       } else {
+           break;
+       }
+   }
+   return return_array;
+}
+function add_cookie(name,value,expiresHours){
+	var cookieString=name+"="+escape(value);
+	//判断是否设置过期时间
+	if(expiresHours>0){
+		var date=new Date();
+		date.setTime(date.getTime+expiresHours*3600*1000);
+		cookieString=cookieString+"; expires="+date.toGMTString();
+	}
+	document.cookie=cookieString;
+}
+function get_cookie(name){
+	var strCookie=document.cookie;
+	var arrCookie=strCookie.split("; ");
+	for(var i=0;i<arrCookie.length;i++){
+		var arr=arrCookie[i].split("=");
+		if(arr[0]==name)return arr[1];
+	}
+	return "";
+}
+function delete_cookie(name){
+	var date=new Date();
+	date.setTime(date.getTime()-10000);
+	document.cookie=name+"=v; expires="+date.toGMTString();
+} 
+function query_hd(param){
+	var url="/clienth5.do;jsessionid="+getSessionId();
+	var infoStr = "";
+	if(param != "") {
+		param.busiCode="8001";
+		param.src = html5src; 
+		$.ajax({
+			url:url,
+			data:param,
+			dataType: "json",
+			async:false,
+			success:function(dataObj){
+				if(dataObj !== "" && dataObj.resCode !== undefined) {
+					infoStr = dataObj;
+				}
+			}
+		});
+	}
+	return infoStr;
+}
+//ios桥接函数
+function connectWebViewJavascriptBridge(callback) {
+	if (window.WebViewJavascriptBridge) {
+		callback(WebViewJavascriptBridge);
+	} else {
+		document.addEventListener('WebViewJavascriptBridgeReady',
+			function() {
+				callback(WebViewJavascriptBridge);
+			}, false);
+	}
+}
+//方案内空格式显示
+function show_bet_code(codestr, lottery, codeplay, prizeNums) {
+    var rdata = "";
+    var astr = ''; var bstr = ''; var astr1 = ''; var bstr1 = ''; var astr2 = ''; var bstr2 = ''; var cstr = ''; var dstr = '';
+    if (lottery == 'FC_SSQ' || lottery == 'TC_CJDLR') {
+		var prizeRedNumArr = [];
+		var prizeBlueNumArr = [];
+		if(prizeNums != '') {
+			var prizeNumArr = prizeNums.split('|'); //卡奖号
+			prizeRedNumArr = prizeNumArr[0].split(' ');
+			prizeBlueNumArr = prizeNumArr[1].split(' ');
+		}
+		var betCodeArr = codestr.split('|');
+		if(codeplay == 'SSQ_DT' || codeplay == 'DLT_DT' || codeplay == 'DLT_DTZJ') {
+			var redCodeArr1 = betCodeArr[0].split(' ');
+			var redCodeArr2 = betCodeArr[1].split(' ');
+			var blueCadeArr1 = betCodeArr[2].split(' ');
+			if(codeplay == 'DLT_DT' || codeplay == 'DLT_DTZJ') {
+				var blueCadeArr2 = betCodeArr[3].split(',');
+			}
+			rdata = '[';
+			for(var i=0;i<redCodeArr1.length;i++) {
+				if($.inArray(redCodeArr1[i], prizeRedNumArr) >= 0) {
+					rdata += '<span class="red_font">'+redCodeArr1[i]+'</span>,';					
+				} else {
+					rdata += redCodeArr1[i]+',';
+				}
+			}
+			rdata = rdata.substr(0, rdata.length-1)+']';
+			for(var ii=0;ii<redCodeArr2.length;ii++) {
+				if($.inArray(redCodeArr2[ii], prizeRedNumArr) >= 0) {
+					rdata += '<span class="red_font">'+redCodeArr2[ii]+'</span>,';					
+				} else {
+					rdata += redCodeArr2[ii]+',';
+				}
+			}
+			rdata = rdata.substr(0, rdata.length-1)+'|';
+			if(betCodeArr.length == 4 && blueCadeArr1[0] != '') { //处理大乐透后区胆拖
+				rdata += '[';
+			}
+			for(var j=0;j<blueCadeArr1.length;j++) {
+				if($.inArray(blueCadeArr1[j], prizeBlueNumArr) >= 0) {
+					rdata += '<span class="blue_font">'+blueCadeArr1[j]+'</span>,';
+				} else {
+					rdata += blueCadeArr1[j]+',';
+				}
+			}
+			rdata = rdata.substr(0, rdata.length-1);
+			if(betCodeArr.length == 4 && blueCadeArr1[0] != '') {
+				rdata += ']';
+			}
+			if(codeplay == 'DLT_DT' || codeplay == 'DLT_DTZJ') {
+				for(var jj=0;jj<blueCadeArr2.length;jj++) {
+					if($.inArray(blueCadeArr2[jj], prizeBlueNumArr) >= 0) {
+						rdata += '<span class="blue_font">'+blueCadeArr2[jj]+'</span>,';
+					} else {
+						rdata += blueCadeArr2[jj]+',';
+					}
+				}
+				rdata = rdata.substr(0, rdata.length-1);
+			}
+		} else {
+			var redCodeArr = betCodeArr[0].split(' ');
+			var blueCadeArr = betCodeArr[1].split(' ');
+			for(var i=0;i<redCodeArr.length;i++) {
+				if($.inArray(redCodeArr[i], prizeRedNumArr)) {
+					rdata += '<span class="red_font">'+redCodeArr[i]+'</span> ';					
+				} else {
+					rdata += redCodeArr[i]+' ';
+				}
+			}
+			rdata = rdata.substr(0, rdata.length-1)+'|';
+			for(var j=0;j<blueCadeArr.length;j++) {
+				if($.inArray(blueCadeArr[j], prizeBlueNumArr) >= 0) {
+					rdata += '<span class="blue_font">'+blueCadeArr[j]+'</span> ';
+				} else {
+					rdata += blueCadeArr[j]+' ';
+				}
+			}
+			rdata = rdata.substr(0, rdata.length-1);
+		}
+    } else if(lottery=="FC_3D" || lottery=="TC_PL3") {//福彩3d、排列3
+		//'D3_ZXDS':'福彩3D直选单式','D3_ZXFS':'福彩3D直选复式','D3_ZXHZ':'福彩3D直选和值','D3_ZUX3DS':'福彩3D组三单式','D3_ZUX3FS':'福彩3D组三复式','D3_ZUX3HZ':'福彩3D组三和值','D3_ZUX6DS':'福彩3D组六单式','D3_ZUX6FS':'福彩3D组六复式','D3_ZUX6HZ':'福彩3D组六和值'
+		codeplay = codeplay.replace('D3_', '').replace('PL3_', '');
+		var prizeNumArr = [];
+		var prizeNumSum = ''; //和值
+		var prizeCodePlay = '';
+		var commonNum = '';
+		var numStatus = ''; //形态
+		if(prizeNums != '') {
+			prizeNumSum = 0;
+			var prizeNumArr = prizeNums.split(' '); //开奖号
+			var uniquePrizeNumArr = new Array();
+			for(var n=0;n<prizeNumArr.length;n++) {
+				prizeNumSum += $.int(prizeNumArr[n]);
+				if($.inArray(prizeNumArr[n], uniquePrizeNumArr) == -1) {
+					uniquePrizeNumArr.push(prizeNumArr[n]);
+				} else {
+					commonNum = prizeNumArr[n];
+				}
+			}
+			numStatus = uniquePrizeNumArr.length;
+		}
+		if(codeplay == 'ZXDS' || codeplay == 'ZXFS') {
+			var betCodeArr = codestr.split(' ');
+			for(var i=0;i<betCodeArr.length;i++) {
+				var theIndex = betCodeArr[i].indexOf(prizeNumArr[i]);
+				rdata += ((theIndex>=0)?betCodeArr[i].replace(prizeNumArr[i],'<span class="red_font">'+prizeNumArr[i]+'</span>'):betCodeArr[i])+' ';
+			}
+			rdata = rdata.substr(0, rdata.length-1);
+		} else if(codeplay == 'ZXHZ') {
+			rdata = (($.int(codestr) == prizeNumSum)?'<span class="red_font">'+codestr+'</span>':codestr);
+		} else if(codeplay == 'ZUX3HZ') {
+			rdata = (($.int(codestr) == prizeNumSum && numStatus == 2)?'<span class="red_font">'+codestr+'</span>':codestr);
+		} else if(codeplay == 'ZUX6HZ') {
+			rdata = (($.int(codestr) == prizeNumSum && numStatus == 3)?'<span class="red_font">'+codestr+'</span>':codestr);
+		} else if(codeplay == 'ZUX3DS') {
+			var betCodeArr = codestr.split(',');
+			var commonBetNum = '';
+			var diffBetNum = '';
+			for(var j=0;j<betCodeArr.length;j++) {
+				var divNums = codestr.split(betCodeArr[j]);
+				if(divNums.length == 2 && $.inArray(betCodeArr[j], prizeNumArr) >= 0 && numStatus == 2 && betCodeArr[j] != commonNum) {
+					diffBetNum = betCodeArr[j];
+				} else if(divNums.length == 3 && $.inArray(betCodeArr[j], prizeNumArr) >= 0 && numStatus == 2 && betCodeArr[j] == commonNum) {
+					commonBetNum = betCodeArr[j];
+				}
+			}
+			for(var i=0;i<betCodeArr.length;i++) {
+				if(betCodeArr[i] == commonBetNum) {
+					rdata += '<span class="red_font">'+betCodeArr[i]+'</span>,';
+				} else if(betCodeArr[i] == diffBetNum) {
+					rdata += '<span class="red_font">'+betCodeArr[i]+'</span>,';
+				} else {
+					rdata += betCodeArr[i]+',';
+				}
+			}
+			rdata = rdata.substr(0, rdata.length-1);
+		} else if(codeplay == 'ZUX3FS') {
+			var betCodeArr = codestr.split(',');
+			for(var i=0;i<betCodeArr.length;i++) {
+				rdata += ($.inArray(betCodeArr[i], prizeNumArr) >= 0 && numStatus == 2)?'<span class="red_font">'+betCodeArr[i]+'</span>,':betCodeArr[i]+',';					
+			}
+			rdata = rdata.substr(0, rdata.length-1);
+		} else if(codeplay == 'ZUX6DS' || codeplay == 'ZUX6FS') {
+			var betCodeArr = codestr.split(',');
+			for(var i=0;i<betCodeArr.length;i++) {
+				rdata += ($.inArray(betCodeArr[i], prizeNumArr) >= 0 && numStatus == 3)?'<span class="red_font">'+betCodeArr[i]+'</span>,':betCodeArr[i]+',';					
+			}
+			rdata = rdata.substr(0, rdata.length-1);
+		} else if(codeplay == 'ZUXHZ') {
+			rdata = (($.int(codestr) == prizeNumSum && (numStatus == 2 || numStatus == 3))?'<span class="red_font">'+codestr+'</span>':codestr);
+		}else {
+			rdata = codestr;
+		}
+	} else {
+		var prizeNumArr = [];
+		if(prizeNums != '') {
+			var prizeNumArr = prizeNums.split(' '); //卡奖号
+		}
+		var betCodeArr = codestr.split(',');
+        for(var i=0;i<betCodeArr.length;i++) {
+			if($.inArray(betCodeArr[i], prizeNumArr) >= 0) {
+				rdata += '<span class="red_font">'+betCodeArr[i]+'</span>,';
+			} else {
+				rdata += betCodeArr[i]+',';
+			}
+		}
+		rdata = rdata.substr(0, rdata.length-1);
+    }
+    return rdata;
+}
+//开奖号码CSS显示
+function show_prize_num(lottery, prizeNum) {
+	var codestr = "";
+	if(prizeNum != '') {
+		if(lottery == 'TC_KLPK3'){
+			var prizeNumArr = prizeNum.split(',');
+			for(var i=0; i<prizeNumArr.length; i++) {
+				var codesArr = prizeNumArr[i].split('-');
+				var code = $.int(codesArr[1]);
+				if(code == '1') {
+					code = 'A';
+				} else if(code == '11') {
+					code = 'J';
+				} else if(code == '12') {
+					code = 'Q';
+				} else if(code == '13') {
+					code = 'K';
+				}
+				codestr += '<span class="pk3_'+codesArr[0]+'">'+code+'</span>';
+			}
+		} else {
+			if(lottery == 'FC_NMK3' || lottery == 'FC_JLK3' || lottery == 'FC_JSK3') {
+				prizeNum = prizeNum.replace(/0/g, '');
+			}
+			var prizeNumArr = prizeNum.split('|');
+			codestr = '<font style="color:#ff0000;font-weight:bold;">'+prizeNumArr[0].replace(/,/g, ' ')+'</font>';
+			if(prizeNumArr.length == 2) {
+				codestr += '+<font style="color:#0000ff;font-weight:bold;">'+prizeNumArr[1]+'</font>';
+			}
+		}
+		$('#openCode').html('本期开奖号：'+codestr);
+	}
+}
+function show_play_code(playCode){
+	var playArr = {'SSQ_DS':'双色球单式','SSQ_FS':'双色球复式','SSQ_DT':'双色球胆拖','D3_ZXDS':'福彩3D直选单式','D3_ZXFS':'福彩3D直选复式','D3_ZXHZ':'福彩3D直选和值','D3_ZUX3DS':'福彩3D组三单式','D3_ZUX3FS':'福彩3D组三复式','D3_ZUX3HZ':'福彩3D组三和值','D3_ZUX6DS':'福彩3D组六单式','D3_ZUX6FS':'福彩3D组六复式','D3_ZUX6HZ':'福彩3D组六和值'};
+	return (playCode != '' && playArr[playCode] != undefined)?playArr[playCode]:'';
+}
+var locationInfo = {
+	//定位
+	get_location:function() {
+		//检查浏览器是否支持地理位置获取
+	if (navigator.geolocation) {
+			//若支持地理位置获取,成功调用showPosition(),失败调用showError
+			// alert("正在努力获取位置...");
+			var config = {enableHighAccuracy: true, timeout: 5000, maximumAge: 30000 };
+			navigator.geolocation.getCurrentPosition(this.show_position, this.show_error, config);
+		}
+	},
+	/**
+	* 获取地址位置成功
+	*/
+	show_position:function (position) {
+		//获得经度纬度
+		var x = position.coords.latitude;
+		var y = position.coords.longitude;
+		//配置Baidu Geocoding API
+		var url = "http://api.map.baidu.com/geocoder/v2/?ak=C93b5178d7a8ebdb830b9b557abce78b" +
+		"&callback=renderReverse" +
+		"&location=" + x + "," + y +
+		"&output=json" +
+		"&pois=0";
+		$.ajax({
+			type: "GET",
+			dataType: "jsonp",
+			url: url,
+			success: function (json) {
+				if (json == null || typeof (json) == "undefined") {
+					return;
+				}
+				if (json.status != "0") {
+					return;
+				}
+				locationInfo.set_address(json.result.addressComponent);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				alert("[x:" + x + ",y:" + y + "]地址位置获取失败,请手动选择地址");
+			}
+		});
+	},
+	/**
+	* 获取地址位置失败[暂不处理]
+	*/
+	show_error:function(error) {
+		switch (error.code) {
+			case error.PERMISSION_DENIED:
+			alert("定位失败,用户拒绝请求地理定位");
+			//x.innerHTML = "User denied the request for Geolocation.[用户拒绝请求地理定位]"
+			break;
+			case error.POSITION_UNAVAILABLE:
+			alert("定位失败,位置信息是不可用");
+			//x.innerHTML = "Location information is unavailable.[位置信息是不可用]"
+			break;
+			case error.TIMEOUT:
+			alert("定位失败,请求获取用户位置超时");
+			//x.innerHTML = "The request to get user location timed out.[请求获取用户位置超时]"
+			break;
+			case error.UNKNOWN_ERROR:
+			alert("定位失败,定位系统失效");
+			//x.innerHTML = "An unknown error occurred.[未知错误]"
+			break;
+		}
+	},
+	/**
+	* 设置地址
+	*/
+	set_address:function(json) {
+		var position = document.getElementById("txtPosition");
+		//省
+		var province = json.province;
+		//市
+		var city = json.city;
+		//区
+		var district = json.district;
+		province = province.replace('市', '');
+		position.innerHTML = province + "," + city + "," + district;
+		position.style.color = 'black';
+	}
+};
+//线条控制
+function init_retina() {
+	if (window.devicePixelRatio && window.devicePixelRatio >= 2) {
+		var e = document.createElement("div");
+		e.style.border = ".5px solid transparent";
+		document.body.appendChild(e);
+		if (e.offsetHeight == 1) {
+			$("body *").addClass("hairlines");
+		}
+		document.body.removeChild(e);
+	}
+}
+//时间格式化
+function format_date(time){
+	var timeStr='';
+	var now=$.now();
+	now = now.split(' ');
+	time = time.split(' ');
+	var nowDay=now[0].split('-');
+	var timeDay=time[0].split('-');
+	if(time[0]==now[0]){
+		timeStr = time[1].substr(0,5);
+	}else if(nowDay[0]==timeDay[0]){
+		if(nowDay[1]==timeDay[1]){
+			if(nowDay[2]==timeDay[2]){
+				timeStr = time[1].substr(0,5);
+			}else if(parseInt(nowDay[2])-parseInt(timeDay[2])==1){
+				timeStr = '昨天';
+			}else{
+				timeStr=time[0].substr(5,5);
+			}
+		}else{
+			timeStr=time[0].substr(5,5);
+		}
+	}else{
+		timeStr=time[0].substr(5,5);
+	}
+	return timeStr;
+}
+function nav_show(style){
+	$(".cji").width($(window).width()-75);
+	if(style == "hidden"){
+		$("#mainNavBtn").removeClass('xzhuan180');
+		$("#mainNav").removeClass('dhzhan').addClass('dhshou');
+		$("#layer").removeClass('hzz0');
+	}else{
+		$("#mainNavBtn").removeClass('xzhuan0');
+		$("#mainNav").removeClass('dhshou').addClass('dhzhan');
+		$("#layer").addClass('hzz0');
+	}
+}
+function middle_nav_show(style) {
+	$("ul[id^='random_area_']").addClass("none0");
+	if(style == "hidden"){
+		$(".ts").removeClass("cdz");
+		$(".xlcd").removeClass("cdznr");
+		$(".hzz").removeClass("hzz0");
+	} else {
+		$(".ts").addClass("cdz");
+		$(".xlcd").addClass("cdznr");
+		$(".hzz").addClass("hzz0");
+	}
+}
+function change_middle_nav(queryString,changeId){
+	$(".ts").unbind("click").bind("click",function(){
+		if($("#mainNav").hasClass("dhzhan")) {
+			nav_show("hidden");
+		}
+		if($(".xlcd").hasClass("cdznr")){
+			middle_nav_show("hidden");
+		} else {
+			middle_nav_show("show");
+		}
+		$(".xlcd li").unbind("click").bind("click",function(){
+			middle_nav_show("hidden");
+			if(changeId != $(this).attr("data-p")) {
+				$(this).addClass("dq").siblings().removeClass("dq");
+				$(".ts span").html($(this).find("a").html());
+				if(queryString != "") {
+					window.location.href="?"+queryString+"="+$(this).attr("data-p");
+				}else{
+					if($(this).attr("data-p")=='all'){
+						$("#place_list section").show();
+					}else{
+						$("#place_list section").hide();
+						$(".lottery"+$(this).attr("data-p")).show();
+					}
+				}
+			}
+		});
+	});
+}
+function showScroll(){//回到顶部
+	var scrollValue=$(window).scrollTop();
+	if(scrollValue>0){
+		$('div[class=back_top]').show();
+	}
+	$(window).scroll( function() { 
+		scrollValue=$(window).scrollTop();
+		scrollValue > 100 ? $('div[class=back_top]').show():$('div[class=back_top]').hide();
+		$("body").unbind("touchend").bind("touchend",function(){
+			setTimeout(function(){
+				$('div[class=back_top]').hide();
+			},3000);
+		});
+	});
+}
+function storage_set_item(key,value){
+	if(window.localStorage){
+		localStorage.setItem(key,value);
+	}
+}
+function storage_get_item(key) {
+	if(window.localStorage){
+		var storage = window.localStorage;
+		if(storage.getItem(key)) {
+			return storage.getItem(key);
+		}
+		return "";
+	}
+}
+function storage_remove_item(key) {
+	if(window.localStorage){
+		localStorage.removeItem(key);
+	}
+}
+function get_active_time_id(){
+	if(sessionStorage.getItem("userId") && sessionStorage.getItem("userId")!=""){
+		var localTimeId = storage_get_item("local_time_id");
+		var userId = sessionStorage.getItem("userId");
+		var url="/clienth5.do";
+		var postData = {transactionType:"300609",userId:userId,src:html5src};
+		$.ajax({
+			url:url,
+			data:postData,
+			dataType: "json",
+			async:false,
+			success:function(dataObj){
+				if(dataObj !== "" && dataObj.messageTime !== undefined) {
+					if(dataObj.messageTime.replace(/\s+/g,"").replace(/\:/g,"") != localTimeId) {
+						$(".notice_icon em").addClass("icon_num");
+					}
+					$("#local_time_id").val(dataObj.messageTime.replace(/\s+/g,"").replace(/\:/g,""));
+				}
+			}
+		});
+	}
+}
+function zhcw_change_font_size(size){
+	var objId = arguments[1]?arguments[1]:'_content'; //用户来源
+	if(size == "big"){
+		$("#"+objId+" *").css({"font-size":"150%"});
+	}else if(size == "small"){
+		$("#"+objId+" *").css({"font-size":"75%"});
+	}else{
+		$("#"+objId+" *").css({"font-size":"100%"});
+	}
+}
+function client_js_api(type,content){
+	var jsonStr = '{"type":"'+type+'","content":"'+content+'"}';
+		if (ua == "android") {
+			zhcwclient.zhcwclientCallBack(jsonStr);
+		} else if(ua == "ios") {
+			connectWebViewJavascriptBridge(function(bridge) {
+			bridge.callHandler('zhcwclientCallBack', {
+				"content":jsonStr
+			});
+		});
+	}
+}

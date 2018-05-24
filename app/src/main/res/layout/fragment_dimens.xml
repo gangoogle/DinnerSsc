@@ -38,7 +38,7 @@
                 android:textColor="@color/coloryellow"
                 android:textSize="14sp"/>
 
-            <com.butter.yapple.ui.customview.AnnularView
+            <com.butter.yapplet.ui.customview.AnnularView
                 android:id="@+id/aa_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
